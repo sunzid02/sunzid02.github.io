@@ -27,7 +27,7 @@
       --text: rgba(255,255,255,0.92);
       --muted: rgba(255,255,255,0.72);
       --border: rgba(115,170,255,0.28);
-      --border2: rgba(115,170,255,0.42);
+      --border2: rgba(4, 11, 22, 0.42);
       --accent: #6aa8ff;
       --accent2: #00d4ff;
       --shadow: rgba(0,0,0,0.45);
@@ -684,16 +684,185 @@
       transform: scale(1.15);
     }
 
-    footer{
-      padding: 26px 0 40px;
-      color: rgba(255,255,255,0.62);
-      font-size: 13px;
-      text-align:center;
+    .footer{
+      /* margin-top: 48px; */
+      padding: 0px 0 36px;
     }
+
+    .footer-inner{
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 18px;
+    }
+
+    .footer-quote{
+      position: relative;
+      border-radius: 22px;
+      padding: 26px 20px 22px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.045);
+      box-shadow: 0 16px 46px rgba(0,0,0,0.35);
+      text-align: center;        /* center everything */
+    }
+
+    .quote-mark{
+      position: absolute;
+      left: 50%;
+      top: 6px;
+      transform: translateX(-50%);
+      font-size: 52px;
+      font-weight: 900;
+      opacity: 0.18;
+      pointer-events: none;
+    }
+
+
+
+    /* Quote text */
+      .quote-text{
+        position: relative;
+        display: inline-block;      /* key: shrink to text width */
+        font-size: 1.1rem;
+        line-height: 1.7;
+        color: rgba(255,255,255,0.92);
+        text-align: center;
+        padding: 0 18px;    
+          letter-spacing: 0.2px;
+        /* small breathing space */
+      }
+
+      /* Opening quote */
+      .quote-text::before{
+        content: "“";
+        position: absolute;
+        left: -10px;                /* close to text */
+        top: -4px;
+        font-size: 1.6rem;
+        opacity: 0.35;
+      }
+
+      /* Closing quote */
+      .quote-text::after{
+        content: "”";
+        position: absolute;
+        right: -10px;               /* close to text */
+        bottom: -4px;
+        font-size: 1.6rem;
+        opacity: 0.35;
+      }
+
+
+    /* Author */
+    .quote-author{
+      margin-top: 10px;
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.70);
+    }
+
+
+
+    /* Quote transition */
+    .quote-text, .quote-author{
+      transition: opacity 220ms ease, transform 220ms ease;
+      will-change: opacity, transform;
+    }
+
+    .quote-fade-out{
+      opacity: 0;
+      transform: translateY(6px);
+    }
+
+    .quote-fade-in{
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+
+    .footer-grid{
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .footer-card{
+      border-radius: 18px;
+      padding: 14px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.03);
+    }
+
+    .footer-label{
+      font-size: 12px;
+      color: rgba(255,255,255,0.64);
+      margin-bottom: 6px;
+    }
+
+    .footer-value{
+      font-weight: 650;
+      color: rgba(255,255,255,0.90);
+    }
+
+    .footer-link{
+      color: rgba(255,255,255,0.92);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255,255,255,0.20);
+    }
+
+    .footer-link:hover{
+      border-bottom-color: rgba(255,255,255,0.42);
+    }
+
+    .footer-bottom{
+      margin-top: 20px;
+      text-align: center;
+      color: rgba(255,255,255,0.78);
+    }
+
+    .footer-sub{
+      margin-top: 6px;
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.55);
+    }
+
+    .footer-signature{
+      margin-top: 10px;
+      text-align: center;
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.62);
+    }
+
+    .footer-signature:hover{
+      color: rgba(255,255,255,0.78);
+    }
+
+    /* Quote transition (simple + reliable) */
+.footer-quote .quote-text,
+.footer-quote .quote-author{
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 260ms ease, transform 260ms ease;
+  will-change: opacity, transform;
+}
+
+.footer-quote.is-fading .quote-text,
+.footer-quote.is-fading .quote-author{
+  opacity: 0;
+  transform: translateY(6px);
+}
+
+
+    @media (max-width: 820px){
+      .footer-grid{
+        grid-template-columns: 1fr;
+      }
+    }
+
     .small{
       font-size: 12px;
       color: rgba(255,255,255,0.64);
     }
+
 
 
       /* 3D Cube Tech Stack */
@@ -778,14 +947,6 @@
       margin-top: 8px;
       padding-top: 10px;
     }
-
-    /* Slightly smaller cube so it fits nicer under the buttons */
-    .cube{
-      width: min(380px, 90vw);
-      height: min(380px, 90vw);
-    }
-
-
     .face-head{
       display:flex;
       align-items:flex-start;
@@ -1329,15 +1490,39 @@
           <div class="dots" id="travelDots" aria-label="Travel slide indicators"></div>
         </div>
       </section>
-
-
-
-      <footer>
-        <div>© <span id="year"></span> Sarker Sunzid Mahmud</div>
-        <div class="small">Built as a single HTML file for GitHub profile hosting.</div>
-      </footer>
-      
     </main>
+
+    <!-- footer -->
+    <footer class="footer">
+      <div class="footer-inner">
+
+        <!-- Quote section -->
+        <div class="footer-quote">
+          <div class="quote-text" id="footerQuote">
+            A person who never made a mistake never tried anything new.
+          </div>
+          <div class="quote-author" id="footerQuoteAuthor">
+            Albert Einstein
+          </div>
+        </div>
+
+
+        <!-- Bottom text -->
+        <div class="footer-bottom">
+          <div>© <span id="year">2026</span> Sarker Sunzid Mahmud (sunzid02@gmail.com) </div>
+          <div class="footer-sub">
+            Built as a single HTML file for GitHub profile hosting.
+          </div>
+        </div>
+
+        <!-- Signature -->
+        <div class="footer-signature">
+          Built by Sarker ☕ with curiosity, care, and a lot of trial and error.
+        </div>
+
+      </div>
+    </footer>
+
 
     <script>
       // --------- Content Creator Slider (lazy video load) ---------
@@ -1491,7 +1676,8 @@
       });
 
       // Footer year
-      document.getElementById("year").textContent = new Date().getFullYear();
+      const yearEl = document.getElementById("year");
+      if (yearEl) yearEl.textContent = new Date().getFullYear();
 
       render();
     </script>
@@ -1894,6 +2080,43 @@
 
 
   
+
+        
+    <script>
+      (function rotateFooterQuotes(){
+        const textEl = document.getElementById("footerQuote");
+        const authorEl = document.getElementById("footerQuoteAuthor");
+        const box = document.querySelector(".footer-quote");
+        if (!textEl || !authorEl || !box) return;
+
+        const quotes = [
+          { t: "A person who never made a mistake never tried anything new.", a: "Albert Einstein" },
+          { t: "Simplicity is the soul of efficiency.", a: "Austin Freeman" },
+          { t: "Make it work, make it right, make it fast.", a: "Kent Beck" },
+          { t: "The best way to predict the future is to build it.", a: "Alan Kay" }
+        ];
+
+        let index = 0;
+        const intervalMs = 4500;
+        const fadeMs = 260;
+
+        function swap(){
+          box.classList.add("is-fading");
+
+          setTimeout(() => {
+            index = (index + 1) % quotes.length;
+            textEl.textContent = quotes[index].t;
+            authorEl.textContent = quotes[index].a;
+
+            box.classList.remove("is-fading");
+          }, fadeMs);
+        }
+
+        setInterval(swap, intervalMs);
+      })();
+    </script>
+
+
 
     <!-- Back to Top Button -->
     <button id="backToTop" class="back-to-top" type="button" aria-label="Back to top">
