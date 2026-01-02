@@ -1234,6 +1234,27 @@
         </div>
       </section>
 
+      <!-- education -->
+      <section class="section fade-in">
+        <h2>Education & Learning</h2>
+        <p>
+          <b>M.Sc. Data Science (ongoing)</b>, TU Dortmund University<br />
+          <b>B.Sc. Computer Science & Engineering</b>, AIUB
+        </p>
+
+        <p>
+          I continuously upskill through hands on projects and certifications, especially in backend architecture,
+          data driven systems, and applied AI.
+        </p>
+
+        <div class="pill-row" style="margin-top:14px">
+          <div class="pill">IBM Cloud-Native Architecture</div>
+          <div class="pill">Docker & Kubernetes</div>
+          <div class="pill">Kafka Fundamentals</div>
+          <div class="pill">Generative AI Foundations</div>
+          <div class="pill">Python for Data & ML</div>
+        </div>
+      </section>
 
       <!-- content -->
       <section id="creator" class="section fade-in">
@@ -1276,6 +1297,7 @@
           <div class="pill flag"><span class="emoji">🇭🇷</span><span class="name">Croatia</span></div>
           <div class="pill flag"><span class="emoji">🇪🇸</span><span class="name">Spain</span></div>
           <div class="pill flag"><span class="emoji">🇹🇷</span><span class="name">Turkey</span></div>
+          <div class="pill flag"><span class="emoji">🇫🇷</span><span class="name">France</span></div>
         </div>
 
         <p style="margin-top:20px; font-style: italic; color: rgba(255,255,255,0.78);">
@@ -1308,32 +1330,13 @@
         </div>
       </section>
 
-      <!-- education -->
-      <section class="section fade-in">
-        <h2>Education & Learning</h2>
-        <p>
-          <b>M.Sc. Data Science (ongoing)</b>, TU Dortmund University<br />
-          <b>B.Sc. Computer Science & Engineering</b>, AIUB
-        </p>
 
-        <p>
-          I continuously upskill through hands on projects and certifications, especially in backend architecture,
-          data driven systems, and applied AI.
-        </p>
-
-        <div class="pill-row" style="margin-top:14px">
-          <div class="pill">IBM Cloud-Native Architecture</div>
-          <div class="pill">Docker & Kubernetes</div>
-          <div class="pill">Kafka Fundamentals</div>
-          <div class="pill">Generative AI Foundations</div>
-          <div class="pill">Python for Data & ML</div>
-        </div>
-      </section>
 
       <footer>
         <div>© <span id="year"></span> Sarker Sunzid Mahmud</div>
         <div class="small">Built as a single HTML file for GitHub profile hosting.</div>
       </footer>
+      
     </main>
 
     <script>
@@ -1632,261 +1635,261 @@
     </script>
 
 
-  <script>
-    // --------- Tech Stack Filter ---------
-    (function initStackFilter(){
-      const buttons = document.querySelectorAll(".filter-btn");
-      const groups = document.querySelectorAll(".stack-group");
+    <script>
+      // --------- Tech Stack Filter ---------
+      (function initStackFilter(){
+        const buttons = document.querySelectorAll(".filter-btn");
+        const groups = document.querySelectorAll(".stack-group");
 
-      if (!buttons.length || !groups.length) return;
+        if (!buttons.length || !groups.length) return;
 
-      function setActive(btn){
-        buttons.forEach(b => b.classList.toggle("active", b === btn));
-      }
-
-      function applyFilter(filter){
-        groups.forEach(g => {
-          const cat = g.getAttribute("data-cat");
-          const show = (filter === "all") || (cat === filter);
-          g.classList.toggle("is-hidden", !show);
-        });
-      }
-
-      buttons.forEach(btn => {
-        btn.addEventListener("click", () => {
-          const filter = btn.getAttribute("data-filter") || "all";
-          setActive(btn);
-          applyFilter(filter);
-        });
-      });
-
-      // default
-      applyFilter("all");
-    })();
-  </script>
-
-  <script>
-    // --------- Travel Photo Slider ---------
-    (function initTravelSlider(){
-      const travelPhotos = [
-        {
-          src: "assets/travel/germany.jpg",
-          title: "Germany",
-          desc: "Match day energy with a giant flag and even bigger excitement. Learned that passion, like software, scales very fast in the right environment."
-        },
-        {
-          src: "assets/travel/austria.jpg",
-          title: "Austria",
-          desc: "Paused mid ride on a quiet bridge, surrounded by mountains and fresh air. One of those moments where you realize debugging life is easier outdoors."
-        },
-        {
-          src: "assets/travel/switzerland.jpg",
-          title: "Switzerland",
-          desc: "Took a deep breath and then took off. Paragliding above the mountains reminded me that sometimes the best perspective comes from letting go."
-        },
-        {
-          src: "assets/travel/croatia.jpg",
-          title: "Croatia",
-          desc: "Proving that even legends need a break. Took the throne for a moment, no kingdom claimed, but confidence levels temporarily boosted."
-        },
-        {
-          src: "assets/travel/spain.jpg",
-          title: "Spain",
-          desc: "Climbed high enough to forget notifications existed. Mountains, open skies, and the feeling of earning the view step by step."
-        },
-        {
-          src: "assets/travel/turkey.jpg",
-          title: "Turkey",
-          desc: "Standing inside centuries of history and silence. A moment of reflection where time slows down and perspective widens."
-        },
-        {
-          src: "assets/travel/france.jpg",
-          title: "France",
-          desc: "Holding the Louvre Pyramid together with teamwork and perfect alignment. Architecture, symmetry, and a bit of creative engineering."
-        },
-        {
-          src: "assets/travel/bd.jpg",
-          title: "Bangladesh",
-          desc: "With my wife at the longest sea beach in the world. A reminder that sometimes the best journeys are the ones taken together."
+        function setActive(btn){
+          buttons.forEach(b => b.classList.toggle("active", b === btn));
         }
-      ];
 
-      const slidesEl = document.getElementById("travelSlides");
-      const dotsEl = document.getElementById("travelDots");
-      const prevBtn = document.getElementById("travelPrevBtn");
-      const nextBtn = document.getElementById("travelNextBtn");
-
-      if (!slidesEl || !dotsEl || !prevBtn || !nextBtn) return;
-
-      let index = 0;
-
-      function esc(s){
-        return String(s || "")
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;");
-      }
-
-      function slideTemplate(p){
-        const t = esc(p.title);
-        const d = esc(p.desc);
-        const src = esc(p.src);
-
-        return `
-          <div class="slide">
-            <div class="photo-wrap">
-              <img loading="lazy" decoding="async" src="${src}" alt="${t} photo" />
-            </div>
-            <div class="photo-meta">
-              <h3>${t}</h3>
-              <p>${d}</p>
-            </div>
-          </div>
-        `;
-      }
-
-      function update(){
-        slidesEl.style.transform = "translateX(" + (-index * 100) + "%)";
-        [...dotsEl.querySelectorAll(".dot")].forEach((dot, i) => {
-          dot.classList.toggle("active", i === index);
-        });
-      }
-
-      function goTo(i){
-        index = (i + travelPhotos.length) % travelPhotos.length;
-        update();
-      }
-
-      function next(){ goTo(index + 1); }
-      function prev(){ goTo(index - 1); }
-
-      function render(){
-        slidesEl.innerHTML = travelPhotos.map(slideTemplate).join("");
-        dotsEl.innerHTML = travelPhotos
-          .map((_, i) => `<button class="dot ${i===0?'active':''}" type="button" aria-label="Go to photo ${i+1}" data-i="${i}"></button>`)
-          .join("");
-        update();
-      }
-
-      prevBtn.addEventListener("click", prev);
-      nextBtn.addEventListener("click", next);
-
-      dotsEl.addEventListener("click", (e) => {
-        const t = e.target;
-        if (t && t.matches(".dot")) {
-          const i = parseInt(t.getAttribute("data-i"), 10);
-          if (!Number.isNaN(i)) goTo(i);
+        function applyFilter(filter){
+          groups.forEach(g => {
+            const cat = g.getAttribute("data-cat");
+            const show = (filter === "all") || (cat === filter);
+            g.classList.toggle("is-hidden", !show);
+          });
         }
-      });
 
-      // Keyboard support when section is visible and user navigates
-      window.addEventListener("keydown", (e) => {
-        const el = document.getElementById("travel-photos");
-        if (!el) return;
-        const rect = el.getBoundingClientRect();
-        const inView = rect.top < window.innerHeight && rect.bottom > 0;
-        if (!inView) return;
+        buttons.forEach(btn => {
+          btn.addEventListener("click", () => {
+            const filter = btn.getAttribute("data-filter") || "all";
+            setActive(btn);
+            applyFilter(filter);
+          });
+        });
 
-        if (e.key === "ArrowLeft") prev();
-        if (e.key === "ArrowRight") next();
-      });
+        // default
+        applyFilter("all");
+      })();
+    </script>
 
-      render();
-    })();
-  </script>
+    <script>
+      // --------- Travel Photo Slider ---------
+      (function initTravelSlider(){
+        const travelPhotos = [
+          {
+            src: "assets/travel/germany.jpg",
+            title: "Germany",
+            desc: "Match day energy with a giant flag and even bigger excitement. Learned that passion, like software, scales very fast in the right environment."
+          },
+          {
+            src: "assets/travel/austria.jpg",
+            title: "Austria",
+            desc: "Paused mid ride on a quiet bridge, surrounded by mountains and fresh air. One of those moments where you realize debugging life is easier outdoors."
+          },
+          {
+            src: "assets/travel/switzerland.jpg",
+            title: "Switzerland",
+            desc: "Took a deep breath and then took off. Paragliding above the mountains reminded me that sometimes the best perspective comes from letting go."
+          },
+          {
+            src: "assets/travel/croatia.jpg",
+            title: "Croatia",
+            desc: "Proving that even legends need a break. Took the throne for a moment, no kingdom claimed, but confidence levels temporarily boosted."
+          },
+          {
+            src: "assets/travel/spain.jpg",
+            title: "Spain",
+            desc: "Climbed high enough to forget notifications existed. Mountains, open skies, and the feeling of earning the view step by step."
+          },
+          {
+            src: "assets/travel/turkey.jpg",
+            title: "Turkey",
+            desc: "Standing inside centuries of history and silence. A moment of reflection where time slows down and perspective widens."
+          },
+          {
+            src: "assets/travel/france.jpg",
+            title: "France",
+            desc: "Holding the Louvre Pyramid together with teamwork and perfect alignment. Architecture, symmetry, and a bit of creative engineering."
+          },
+          {
+            src: "assets/travel/bd.jpg",
+            title: "Bangladesh",
+            desc: "With my wife at the longest sea beach in the world. A reminder that sometimes the best journeys are the ones taken together."
+          }
+        ];
 
-  <script>
-    (function initTechCube(){
-      const cube = document.getElementById("techCube");
-      if (!cube) return;
+        const slidesEl = document.getElementById("travelSlides");
+        const dotsEl = document.getElementById("travelDots");
+        const prevBtn = document.getElementById("travelPrevBtn");
+        const nextBtn = document.getElementById("travelNextBtn");
 
-      let rotX = -12;
-      let rotY = 22;
+        if (!slidesEl || !dotsEl || !prevBtn || !nextBtn) return;
 
-      function apply(){
-        cube.style.setProperty("--rx", rotX + "deg");
-        cube.style.setProperty("--ry", rotY + "deg");
-        cube.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
-      }
+        let index = 0;
 
-      let idleTimer = null;
-      function startIdle(){
-        cube.classList.add("idle");
-      }
-      function stopIdle(){
-        cube.classList.remove("idle");
-        if (idleTimer) clearTimeout(idleTimer);
-        idleTimer = setTimeout(() => cube.classList.add("idle"), 2200);
-      }
+        function esc(s){
+          return String(s || "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;");
+        }
 
-      apply();
-      startIdle();
+        function slideTemplate(p){
+          const t = esc(p.title);
+          const d = esc(p.desc);
+          const src = esc(p.src);
 
-      let dragging = false;
-      let startX = 0;
-      let startY = 0;
-      let startRotX = 0;
-      let startRotY = 0;
+          return `
+            <div class="slide">
+              <div class="photo-wrap">
+                <img loading="lazy" decoding="async" src="${src}" alt="${t} photo" />
+              </div>
+              <div class="photo-meta">
+                <h3>${t}</h3>
+                <p>${d}</p>
+              </div>
+            </div>
+          `;
+        }
 
-      function onDown(e){
-        stopIdle();
-        dragging = true;
-        cube.setPointerCapture?.(e.pointerId);
-        startX = e.clientX;
-        startY = e.clientY;
-        startRotX = rotX;
-        startRotY = rotY;
-      }
+        function update(){
+          slidesEl.style.transform = "translateX(" + (-index * 100) + "%)";
+          [...dotsEl.querySelectorAll(".dot")].forEach((dot, i) => {
+            dot.classList.toggle("active", i === index);
+          });
+        }
 
-      function onMove(e){
-        if (!dragging) return;
-        const dx = e.clientX - startX;
-        const dy = e.clientY - startY;
-        rotY = startRotY + dx * 0.35;
-        rotX = startRotX - dy * 0.35;
-        rotX = Math.max(-85, Math.min(85, rotX));
+        function goTo(i){
+          index = (i + travelPhotos.length) % travelPhotos.length;
+          update();
+        }
+
+        function next(){ goTo(index + 1); }
+        function prev(){ goTo(index - 1); }
+
+        function render(){
+          slidesEl.innerHTML = travelPhotos.map(slideTemplate).join("");
+          dotsEl.innerHTML = travelPhotos
+            .map((_, i) => `<button class="dot ${i===0?'active':''}" type="button" aria-label="Go to photo ${i+1}" data-i="${i}"></button>`)
+            .join("");
+          update();
+        }
+
+        prevBtn.addEventListener("click", prev);
+        nextBtn.addEventListener("click", next);
+
+        dotsEl.addEventListener("click", (e) => {
+          const t = e.target;
+          if (t && t.matches(".dot")) {
+            const i = parseInt(t.getAttribute("data-i"), 10);
+            if (!Number.isNaN(i)) goTo(i);
+          }
+        });
+
+        // Keyboard support when section is visible and user navigates
+        window.addEventListener("keydown", (e) => {
+          const el = document.getElementById("travel-photos");
+          if (!el) return;
+          const rect = el.getBoundingClientRect();
+          const inView = rect.top < window.innerHeight && rect.bottom > 0;
+          if (!inView) return;
+
+          if (e.key === "ArrowLeft") prev();
+          if (e.key === "ArrowRight") next();
+        });
+
+        render();
+      })();
+    </script>
+
+    <script>
+      (function initTechCube(){
+        const cube = document.getElementById("techCube");
+        if (!cube) return;
+
+        let rotX = -12;
+        let rotY = 22;
+
+        function apply(){
+          cube.style.setProperty("--rx", rotX + "deg");
+          cube.style.setProperty("--ry", rotY + "deg");
+          cube.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+        }
+
+        let idleTimer = null;
+        function startIdle(){
+          cube.classList.add("idle");
+        }
+        function stopIdle(){
+          cube.classList.remove("idle");
+          if (idleTimer) clearTimeout(idleTimer);
+          idleTimer = setTimeout(() => cube.classList.add("idle"), 2200);
+        }
+
         apply();
-      }
+        startIdle();
 
-      function onUp(){
-        dragging = false;
-        stopIdle();
-      }
+        let dragging = false;
+        let startX = 0;
+        let startY = 0;
+        let startRotX = 0;
+        let startRotY = 0;
 
-      cube.addEventListener("pointerdown", onDown);
-      window.addEventListener("pointermove", onMove, { passive: true });
-      window.addEventListener("pointerup", onUp, { passive: true });
-
-      const map = {
-        backend:   { x: 0,   y: 0   },
-        frontend:  { x: 0,   y: -90 },
-        ai:        { x: 0,   y: 180 },
-        devops:    { x: 0,   y: 90  },
-        prompting: { x: -90, y: 0   },
-        content:   { x: 90,  y: 0   },
-        reset:     { x: -12, y: 22  }
-      };
-
-      document.querySelectorAll(".cube-btn").forEach(btn => {
-        btn.addEventListener("click", () => {
+        function onDown(e){
           stopIdle();
-          const face = btn.getAttribute("data-face");
-          const target = map[face];
-          if (!target) return;
-          rotX = target.x;
-          rotY = target.y;
-          apply();
-        });
-      });
+          dragging = true;
+          cube.setPointerCapture?.(e.pointerId);
+          startX = e.clientX;
+          startY = e.clientY;
+          startRotX = rotX;
+          startRotY = rotY;
+        }
 
-      // Stop idle if user scrolls near the cube and interacts
-      cube.addEventListener("mouseenter", stopIdle);
-      cube.addEventListener("mouseleave", () => {
-        if (idleTimer) clearTimeout(idleTimer);
-        idleTimer = setTimeout(() => cube.classList.add("idle"), 900);
-      });
-    })();
-  </script>
+        function onMove(e){
+          if (!dragging) return;
+          const dx = e.clientX - startX;
+          const dy = e.clientY - startY;
+          rotY = startRotY + dx * 0.35;
+          rotX = startRotX - dy * 0.35;
+          rotX = Math.max(-85, Math.min(85, rotX));
+          apply();
+        }
+
+        function onUp(){
+          dragging = false;
+          stopIdle();
+        }
+
+        cube.addEventListener("pointerdown", onDown);
+        window.addEventListener("pointermove", onMove, { passive: true });
+        window.addEventListener("pointerup", onUp, { passive: true });
+
+        const map = {
+          backend:   { x: 0,   y: 0   },
+          frontend:  { x: 0,   y: -90 },
+          ai:        { x: 0,   y: 180 },
+          devops:    { x: 0,   y: 90  },
+          prompting: { x: -90, y: 0   },
+          content:   { x: 90,  y: 0   },
+          reset:     { x: -12, y: 22  }
+        };
+
+        document.querySelectorAll(".cube-btn").forEach(btn => {
+          btn.addEventListener("click", () => {
+            stopIdle();
+            const face = btn.getAttribute("data-face");
+            const target = map[face];
+            if (!target) return;
+            rotX = target.x;
+            rotY = target.y;
+            apply();
+          });
+        });
+
+        // Stop idle if user scrolls near the cube and interacts
+        cube.addEventListener("mouseenter", stopIdle);
+        cube.addEventListener("mouseleave", () => {
+          if (idleTimer) clearTimeout(idleTimer);
+          idleTimer = setTimeout(() => cube.classList.add("idle"), 900);
+        });
+      })();
+    </script>
 
 
 
