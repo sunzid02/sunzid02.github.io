@@ -694,6 +694,212 @@
       color: rgba(255,255,255,0.64);
     }
 
+
+    /* 3D Cube Tech Stack */
+.cube-ui{ margin-top: 18px; }
+
+.cube-controls{
+  display:flex;
+  flex-wrap:wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.cube-btn{
+  padding: 9px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.045);
+  color: rgba(255,255,255,0.88);
+  font-weight: 650;
+  font-size: 13px;
+  cursor:pointer;
+  transition: 150ms ease;
+}
+.cube-btn:hover{
+  transform: translateY(-1px);
+  border-color: rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.07);
+}
+.cube-btn.subtle{
+  opacity: 0.85;
+}
+
+.cube-stage{
+  perspective: 1100px;
+  width: 100%;
+  display:flex;
+  justify-content:center;
+  padding: 10px 0 6px;
+}
+
+.cube{
+  width: min(420px, 92vw);
+  height: min(420px, 92vw);
+  position: relative;
+  transform-style: preserve-3d;
+  cursor: grab;
+  user-select:none;
+  touch-action: none;
+  will-change: transform;
+  transition: transform 260ms ease;
+}
+.cube:active{ cursor: grabbing; }
+
+.cube-face{
+  position:absolute;
+  inset: 0;
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.045);
+  box-shadow: 0 18px 55px rgba(0,0,0,0.34);
+  padding: 16px;
+  display:flex;
+  flex-direction:column;
+  gap: 12px;
+  backface-visibility: hidden;
+}
+
+
+/* Give space so the cube never touches the controls */
+.cube-controls{
+  position: relative;
+  z-index: 10;              /* always above the cube */
+  margin-bottom: 18px;      /* more breathing room */
+}
+
+/* Push the cube down a bit and keep it behind controls */
+.cube-stage{
+  position: relative;
+  z-index: 1;
+  margin-top: 8px;
+  padding-top: 10px;
+}
+
+/* Slightly smaller cube so it fits nicer under the buttons */
+.cube{
+  width: min(380px, 90vw);
+  height: min(380px, 90vw);
+}
+
+
+.face-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap: 10px;
+}
+
+.face-title{
+  font-weight: 850;
+  letter-spacing: -0.2px;
+  color: rgba(255,255,255,0.94);
+  font-size: 1.05rem;
+}
+
+.face-badge{
+  font-size: 12px;
+  color: rgba(255,255,255,0.70);
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.04);
+  white-space: nowrap;
+}
+
+.face-grid{
+  display:grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 2px;
+}
+
+.tag{
+  padding: 11px 12px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.88);
+  font-weight: 650;
+  font-size: 13px;
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  transition: 150ms ease;
+}
+.tag:hover{
+  transform: translateY(-1px);
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.14);
+}
+.tag .i{ opacity: 0.92; font-size: 1.05rem; }
+
+.cube-hint{
+  margin-top: 10px;
+  color: rgba(255,255,255,0.68);
+  font-size: 13px;
+}
+
+/* Cube face positions */
+.cube-face.front{ transform: rotateY(0deg) translateZ(210px); }
+.cube-face.right{ transform: rotateY(90deg) translateZ(210px); }
+.cube-face.back{ transform: rotateY(180deg) translateZ(210px); }
+.cube-face.left{ transform: rotateY(-90deg) translateZ(210px); }
+.cube-face.top{ transform: rotateX(90deg) translateZ(210px); }
+.cube-face.bottom{ transform: rotateX(-90deg) translateZ(210px); }
+
+
+
+.back-to-top{
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  width: 46px;
+  height: 46px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.92);
+  font-size: 18px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition: 160ms ease;
+  z-index: 50;
+}
+
+.back-to-top:hover{
+  transform: translateY(6px);
+  background: rgba(255,255,255,0.09);
+  border-color: rgba(255,255,255,0.20);
+}
+
+.back-to-top.show{
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+
+/* Responsive depth */
+@media (max-width: 520px){
+  .cube-face.front{ transform: rotateY(0deg) translateZ(175px); }
+  .cube-face.right{ transform: rotateY(90deg) translateZ(175px); }
+  .cube-face.back{ transform: rotateY(180deg) translateZ(175px); }
+  .cube-face.left{ transform: rotateY(-90deg) translateZ(175px); }
+  .cube-face.top{ transform: rotateX(90deg) translateZ(175px); }
+  .cube-face.bottom{ transform: rotateX(-90deg) translateZ(175px); }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .cube{ transition: none !important; }
+}
+
+
     /* print */
     @media print{
       #three-canvas, .topbar{ display:none !important; }
@@ -782,137 +988,128 @@
         </div>
       </section>
 
-
-
-
-      <!-- tech stack -->
+      <!-- tech stack (3D cube) -->
       <section id="stack" class="section fade-in">
         <h2>Tech Stack</h2>
         <p style="margin-top:12px; color: rgba(255,255,255,0.78);">
-          Tools I use to build scalable products, ship reliably, and create content with AI support.
+          Explore my stack as a 3D cube. Drag to rotate, or use the buttons to jump to a side.
         </p>
 
-        <!-- Filter bar -->
-        <div class="stack-filters" aria-label="Tech stack filters">
-          <button class="filter-btn active" type="button" data-filter="all">All</button>
-          <button class="filter-btn" type="button" data-filter="backend">Backend</button>
-          <button class="filter-btn" type="button" data-filter="frontend">Frontend</button>
-          <button class="filter-btn" type="button" data-filter="ai">AI</button>
-          <button class="filter-btn" type="button" data-filter="devops">DevOps</button>
-          <button class="filter-btn" type="button" data-filter="prompting">Prompting Tools</button>
-          <button class="filter-btn" type="button" data-filter="content">Content Creation</button>
-        </div>
-
-        <div class="stack-groups" aria-label="Tech stack grouped">
-          <!-- Backend -->
-          <div class="stack-group" data-cat="backend">
-            <div class="stack-head">
-              <div class="stack-title">Backend</div>
-              <div class="stack-badge">APIs • Data • Architecture</div>
-            </div>
-            <div class="tech-grid">
-              <div class="tech" data-cat="backend"><span class="icon">🐘</span><span>PHP (Laravel, Symfony)</span></div>
-              <div class="tech" data-cat="backend"><span class="icon">🟢</span><span>Node.js (Express)</span></div>
-              <div class="tech" data-cat="backend"><span class="icon">🔗</span><span>REST APIs</span></div>
-              <div class="tech" data-cat="backend"><span class="icon">🧬</span><span>GraphQL</span></div>
-              <div class="tech" data-cat="backend"><span class="icon">🗄️</span><span>MySQL</span></div>
-              <div class="tech" data-cat="backend"><span class="icon">🍃</span><span>MongoDB</span></div>
-              <div class="tech" data-cat="backend"><span class="icon">📡</span><span>Kafka</span></div>
-            </div>
+        <div class="cube-ui">
+          <div class="cube-controls" aria-label="Cube controls">
+            <button class="cube-btn" type="button" data-face="backend">Backend</button>
+            <button class="cube-btn" type="button" data-face="frontend">Frontend</button>
+            <button class="cube-btn" type="button" data-face="ai">AI</button>
+            <button class="cube-btn" type="button" data-face="devops">DevOps</button>
+            <button class="cube-btn" type="button" data-face="prompting">Prompting</button>
+            <button class="cube-btn" type="button" data-face="content">Content</button>
+            <button class="cube-btn subtle" type="button" data-face="reset">Reset</button>
           </div>
 
-          <!-- Frontend -->
-          <div class="stack-group" data-cat="frontend">
-            <div class="stack-head">
-              <div class="stack-title">Frontend</div>
-              <div class="stack-badge">UI • Web Apps</div>
-            </div>
-            <div class="tech-grid">
-              <!-- Core Web -->
-              <div class="tech" data-cat="frontend"><span class="icon">🌐</span><span>HTML</span></div>
-              <div class="tech" data-cat="frontend"><span class="icon">🎨</span><span>CSS</span></div>
-              <div class="tech" data-cat="frontend"><span class="icon">💨</span><span>Tailwind CSS</span></div>
-              <div class="tech" data-cat="frontend"><span class="icon">✨</span><span>JavaScript</span></div>
+          <div class="cube-stage" aria-label="3D tech cube">
+            <div class="cube" id="techCube" role="application" aria-label="Interactive 3D cube">
+              <!-- FRONT -->
+              <div class="cube-face front">
+                <div class="face-head">
+                  <div class="face-title">Backend</div>
+                  <div class="face-badge">APIs • Data • Architecture</div>
+                </div>
+                <div class="face-grid">
+                  <div class="tag"><span class="i">🐘</span>PHP (Laravel, Symfony)</div>
+                  <div class="tag"><span class="i">🟢</span>Node.js (Express)</div>
+                  <div class="tag"><span class="i">🔗</span>REST APIs</div>
+                  <div class="tag"><span class="i">🧬</span>GraphQL</div>
+                  <div class="tag"><span class="i">🗄️</span>MySQL</div>
+                  <div class="tag"><span class="i">🍃</span>MongoDB</div>
+                  <div class="tag"><span class="i">📡</span>Kafka</div>
+                </div>
+              </div>
 
-              <!-- Frameworks -->
-              <div class="tech" data-cat="frontend"><span class="icon">⚛️</span><span>React</span></div>
-              <div class="tech" data-cat="frontend"><span class="icon">🅰️</span><span>Angular</span></div>
-              <div class="tech" data-cat="frontend"><span class="icon">📘</span><span>TypeScript</span></div>
+              <!-- RIGHT -->
+              <div class="cube-face right">
+                <div class="face-head">
+                  <div class="face-title">Frontend</div>
+                  <div class="face-badge">UI • Web Apps • Experiments</div>
+                </div>
+                <div class="face-grid">
+                  <div class="tag"><span class="i">🌐</span>HTML</div>
+                  <div class="tag"><span class="i">🎨</span>CSS</div>
+                  <div class="tag"><span class="i">💨</span>Tailwind CSS</div>
+                  <div class="tag"><span class="i">✨</span>JavaScript</div>
+                  <div class="tag"><span class="i">⚛️</span>React</div>
+                  <div class="tag"><span class="i">🅰️</span>Angular</div>
+                  <div class="tag"><span class="i">📘</span>TypeScript</div>
+                  <div class="tag"><span class="i">🧪</span>VWO (A/B Testing)</div>
+                  <div class="tag"><span class="i">📊</span>Optimizely</div>
+                  <div class="tag"><span class="i">📈</span>Google Optimize</div>
+                </div>
+              </div>
 
-              <!-- Experimentation -->
-              <div class="tech" data-cat="frontend"><span class="icon">🧪</span><span>VWO (A/B Testing)</span></div>
-              <div class="tech" data-cat="frontend"><span class="icon">📊</span><span>Optimizely</span></div>
-              <div class="tech" data-cat="frontend"><span class="icon">📈</span><span>Google Optimize</span></div>
-            </div>
+              <!-- BACK -->
+              <div class="cube-face back">
+                <div class="face-head">
+                  <div class="face-title">AI</div>
+                  <div class="face-badge">RAG • LLM • Automation</div>
+                </div>
+                <div class="face-grid">
+                  <div class="tag"><span class="i">🐍</span>Python</div>
+                  <div class="tag"><span class="i">🧠</span>LLM Applications</div>
+                  <div class="tag"><span class="i">📄</span>RAG Pipelines</div>
+                  <div class="tag"><span class="i">🔗</span>LangChain</div>
+                  <div class="tag"><span class="i">📦</span>Vector Databases</div>
+                  <div class="tag"><span class="i">✨</span>Generative AI</div>
+                </div>
+              </div>
 
+              <!-- LEFT -->
+              <div class="cube-face left">
+                <div class="face-head">
+                  <div class="face-title">DevOps</div>
+                  <div class="face-badge">Deploy • Scale • Ship</div>
+                </div>
+                <div class="face-grid">
+                  <div class="tag"><span class="i">🐳</span>Docker</div>
+                  <div class="tag"><span class="i">☸️</span>Kubernetes</div>
+                  <div class="tag"><span class="i">⚙️</span>GitHub Actions</div>
+                  <div class="tag"><span class="i">🧪</span>PHPUnit • Jest</div>
+                </div>
+              </div>
 
-          </div>
+              <!-- TOP -->
+              <div class="cube-face top">
+                <div class="face-head">
+                  <div class="face-title">Prompting Tools</div>
+                  <div class="face-badge">Research • Ideation • Prompting</div>
+                </div>
+                <div class="face-grid">
+                  <div class="tag"><span class="i">💬</span>ChatGPT</div>
+                  <div class="tag"><span class="i">🔷</span>Gemini</div>
+                  <div class="tag"><span class="i">⚡</span>Grok</div>
+                  <div class="tag"><span class="i">🧩</span>Canva</div>
+                  <div class="tag"><span class="i">🔎</span>Perplexity</div>
+                  <div class="tag"><span class="i">📓</span>NotebookLM</div>
+                </div>
+              </div>
 
-          <!-- AI -->
-          <div class="stack-group" data-cat="ai">
-            <div class="stack-head">
-              <div class="stack-title">AI</div>
-              <div class="stack-badge">RAG • LLM • Automation</div>
-            </div>
-            <div class="tech-grid">
-              <div class="tech" data-cat="ai"><span class="icon">🐍</span><span>Python</span></div>
-              <div class="tech" data-cat="ai"><span class="icon">🧠</span><span>LLM Applications</span></div>
-              <div class="tech" data-cat="ai"><span class="icon">📄</span><span>RAG Pipelines</span></div>
-              <div class="tech" data-cat="ai"><span class="icon">🔗</span><span>LangChain</span></div>
-              <div class="tech" data-cat="ai"><span class="icon">📦</span><span>Vector Databases</span></div>
-              <div class="tech" data-cat="ai"><span class="icon">✨</span><span>Generative AI</span></div>
-            </div>
-          </div>
-
-          <!-- DevOps -->
-          <div class="stack-group" data-cat="devops">
-            <div class="stack-head">
-              <div class="stack-title">DevOps</div>
-              <div class="stack-badge">Deploy • Scale • Ship</div>
-            </div>
-            <div class="tech-grid">
-              <div class="tech" data-cat="devops"><span class="icon">🐳</span><span>Docker</span></div>
-              <div class="tech" data-cat="devops"><span class="icon">☸️</span><span>Kubernetes</span></div>
-              <div class="tech" data-cat="devops"><span class="icon">⚙️</span><span>GitHub Actions</span></div>
-              <div class="tech" data-cat="devops"><span class="icon">🧪</span><span>PHPUnit • Jest</span></div>
-            </div>
-          </div>
-
-          <!-- Prompting tools -->
-          <div class="stack-group" data-cat="prompting">
-            <div class="stack-head">
-              <div class="stack-title">Prompting Tools</div>
-              <div class="stack-badge">Research • Ideation • Prompting</div>
-            </div>
-            <div class="tech-grid">
-              <div class="tech" data-cat="prompting"><span class="icon">💬</span><span>ChatGPT</span></div>
-              <div class="tech" data-cat="prompting"><span class="icon">🔷</span><span>Gemini</span></div>
-              <div class="tech" data-cat="prompting"><span class="icon">⚡</span><span>Grok</span></div>
-              <div class="tech" data-cat="prompting"><span class="icon">🧩</span><span>Canva</span></div>
-              <div class="tech" data-cat="prompting"><span class="icon">🔎</span><span>Perplexity</span></div>
-              <div class="tech" data-cat="prompting">
-                <span class="icon">📓</span>
-                <span>NotebookLM</span>
+              <!-- BOTTOM -->
+              <div class="cube-face bottom">
+                <div class="face-head">
+                  <div class="face-title">Content Creation</div>
+                  <div class="face-badge">Video • Audio</div>
+                </div>
+                <div class="face-grid">
+                  <div class="tag"><span class="i">🎬</span>CapCut</div>
+                  <div class="tag"><span class="i">🎙️</span>ElevenLabs (Audio)</div>
+                </div>
               </div>
             </div>
           </div>
 
-          <!-- Content creation -->
-          <div class="stack-group" data-cat="content">
-            <div class="stack-head">
-              <div class="stack-title">Content Creation</div>
-              <div class="stack-badge">Video • Audio</div>
-            </div>
-            <div class="tech-grid">
-              <div class="tech" data-cat="content"><span class="icon">🎬</span><span>CapCut</span></div>
-              <div class="tech" data-cat="content"><span class="icon">🎙️</span><span>ElevenLabs (Audio)</span></div>
-            </div>
-          </div>
+          <p class="cube-hint">
+            Tip: drag the cube. On mobile, swipe. Use buttons to snap to a side.
+          </p>
         </div>
       </section>
-
-
-
 
 
       <!-- experience -->
@@ -1009,7 +1206,7 @@
       <section id="creator" class="section fade-in">
         <h2>Content Creator</h2>
         <p>
-I also create developer focused content like short tutorials, interview prep, and practical engineering notes. When I am not explaining serious tech things, I enjoy making funny and creative memes to show my imagination, keep learning fun, and remind everyone that engineers are allowed to laugh too.        </p>
+        I also create developer focused content like short tutorials, interview prep, and practical engineering notes. When I am not explaining serious tech things, I enjoy making funny and creative memes to show my imagination, keep learning fun, and remind everyone that engineers are allowed to laugh too.        </p>
 
         <div class="slider" aria-label="Video slider">
           <div class="slider-top">
@@ -1564,7 +1761,103 @@ I also create developer focused content like short tutorials, interview prep, an
       render();
     })();
   </script>
+<script>
+  // --------- 3D Tech Cube (drag + snap) ---------
+  (function initTechCube(){
+    const cube = document.getElementById("techCube");
+    if (!cube) return;
+
+    let rotX = -12;
+    let rotY = 22;
+
+    function apply(){
+      cube.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+    }
+    apply();
+
+    // Drag support
+    let dragging = false;
+    let startX = 0;
+    let startY = 0;
+    let startRotX = 0;
+    let startRotY = 0;
+
+    function onDown(e){
+      dragging = true;
+      cube.setPointerCapture?.(e.pointerId);
+      startX = e.clientX;
+      startY = e.clientY;
+      startRotX = rotX;
+      startRotY = rotY;
+    }
+
+    function onMove(e){
+      if (!dragging) return;
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+      rotY = startRotY + dx * 0.35;
+      rotX = startRotX - dy * 0.35;
+      rotX = Math.max(-85, Math.min(85, rotX));
+      apply();
+    }
+
+    function onUp(){
+      dragging = false;
+    }
+
+    cube.addEventListener("pointerdown", onDown);
+    window.addEventListener("pointermove", onMove, { passive: true });
+    window.addEventListener("pointerup", onUp, { passive: true });
+
+    // Snap buttons
+    const map = {
+      backend:   { x: 0,   y: 0   },
+      frontend:  { x: 0,   y: -90 },
+      ai:        { x: 0,   y: 180 },
+      devops:    { x: 0,   y: 90  },
+      prompting: { x: -90, y: 0   },
+      content:   { x: 90,  y: 0   },
+      reset:     { x: -12, y: 22  }
+    };
+
+    document.querySelectorAll(".cube-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const face = btn.getAttribute("data-face");
+        const target = map[face];
+        if (!target) return;
+        rotX = target.x;
+        rotY = target.y;
+        apply();
+      });
+    });
+  })();
+</script>
 
 
-  </body>
+  
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="back-to-top" type="button" aria-label="Back to top">
+      ↑
+    </button>
+    <script>
+      (function initBackToTop(){
+        const btn = document.getElementById("backToTop");
+        if (!btn) return;
+
+        function toggle(){
+          const show = window.scrollY > 500;
+          btn.classList.toggle("show", show);
+        }
+
+        btn.addEventListener("click", () => {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+
+        window.addEventListener("scroll", toggle, { passive: true });
+        toggle();
+      })();
+    </script>
+
+</body>
 </html>
