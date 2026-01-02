@@ -164,6 +164,22 @@
       box-shadow: 0 10px 28px var(--shadow);
     }
 
+    .pill.flag{
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+    }
+
+    .pill.flag .emoji{
+      font-size: 1.05rem;
+      line-height: 1;
+    }
+
+    .pill.flag .name{
+      font-weight: 650;
+    }
+
+
     .cta-row{
       display:flex;
       flex-wrap:wrap;
@@ -248,6 +264,164 @@
       font-size: 13px;
       transition: 140ms ease;
     }
+
+
+/* Grouped Tech Stack */
+.stack-groups{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.stack-group{
+  border-radius: var(--radius);
+  background: rgba(255,255,255,0.035);
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 14px 35px rgba(0,0,0,0.22);
+  padding: 16px;
+  transition: 160ms ease;
+}
+
+.stack-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.stack-title{
+  font-weight: 850;
+  letter-spacing: -0.2px;
+  color: rgba(255,255,255,0.94);
+}
+
+.stack-badge{
+  font-size: 12px;
+  color: rgba(255,255,255,0.70);
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.04);
+}
+
+/* Category glow colors (subtle) */
+:root{
+  --glow-backend: rgba(106,168,255,0.30);
+  --glow-frontend: rgba(0,212,255,0.26);
+  --glow-ai: rgba(170,120,255,0.26);
+  --glow-devops: rgba(80,210,140,0.22);
+
+   /* NEW */
+  --glow-prompting: rgba(255,190,90,0.28);
+  --glow-content: rgba(255,120,180,0.26);
+}
+
+.stack-group[data-cat="backend"]:hover{
+  border-color: rgba(106,168,255,0.45);
+  box-shadow: 0 18px 55px rgba(0,0,0,0.30), 0 0 0 1px var(--glow-backend);
+}
+.stack-group[data-cat="frontend"]:hover{
+  border-color: rgba(0,212,255,0.38);
+  box-shadow: 0 18px 55px rgba(0,0,0,0.30), 0 0 0 1px var(--glow-frontend);
+}
+.stack-group[data-cat="ai"]:hover{
+  border-color: rgba(170,120,255,0.36);
+  box-shadow: 0 18px 55px rgba(0,0,0,0.30), 0 0 0 1px var(--glow-ai);
+}
+.stack-group[data-cat="devops"]:hover{
+  border-color: rgba(80,210,140,0.32);
+  box-shadow: 0 18px 55px rgba(0,0,0,0.30), 0 0 0 1px var(--glow-devops);
+}
+.stack-group[data-cat="prompting"]:hover{
+  border-color: rgba(255,190,90,0.45);
+  box-shadow:
+    0 18px 55px rgba(0,0,0,0.30),
+    0 0 0 1px var(--glow-prompting);
+}
+
+.stack-group[data-cat="content"]:hover{
+  border-color: rgba(255,120,180,0.42);
+  box-shadow:
+    0 18px 55px rgba(0,0,0,0.30),
+    0 0 0 1px var(--glow-content);
+}
+
+
+/* Filter bar */
+.stack-filters{
+  display:flex;
+  flex-wrap:wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.filter-btn{
+  padding: 9px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.045);
+  color: rgba(255,255,255,0.88);
+  font-weight: 650;
+  font-size: 13px;
+  cursor:pointer;
+  transition: 150ms ease;
+}
+
+.filter-btn:hover{
+  transform: translateY(-1px);
+  border-color: rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.07);
+}
+
+.filter-btn.active{
+  background: rgba(106,168,255,0.16);
+  border-color: rgba(106,168,255,0.40);
+}
+
+/* Filter behavior */
+.stack-group.is-hidden{
+  display:none;
+}
+
+
+/* Tech pill becomes icon + label */
+.tech{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+}
+
+.tech .icon{
+  font-size: 1.05rem;
+  line-height: 1;
+  opacity: 0.92;
+  transform: translateY(0);
+  transition: 160ms ease;
+}
+
+/* Animate icons slightly on hover */
+.tech:hover .icon{
+  transform: translateY(-1px) scale(1.03);
+}
+
+/* Category-based hover tint on each item */
+.tech[data-cat="backend"]:hover{ background: rgba(106,168,255,0.10); border-color: rgba(106,168,255,0.30); }
+.tech[data-cat="frontend"]:hover{ background: rgba(0,212,255,0.10); border-color: rgba(0,212,255,0.26); }
+.tech[data-cat="ai"]:hover{ background: rgba(170,120,255,0.10); border-color: rgba(170,120,255,0.24); }
+.tech[data-cat="devops"]:hover{ background: rgba(80,210,140,0.10); border-color: rgba(80,210,140,0.22); }
+
+.tech[data-cat="prompting"]:hover{
+  background: rgba(255,190,90,0.10);
+  border-color: rgba(255,190,90,0.28);
+}
+
+.tech[data-cat="content"]:hover{
+  background: rgba(255,120,180,0.10);
+  border-color: rgba(255,120,180,0.26);
+}
+
     .tech:hover{
       border-color: rgba(106,168,255,0.35);
       background: rgba(106,168,255,0.10);
@@ -431,6 +605,42 @@
       background: rgba(255,255,255,0.06);
     }
 
+
+
+    .photo-wrap{
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(0,0,0,0.22);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+  position: relative;
+  aspect-ratio: 16 / 9;
+}
+
+.photo-wrap img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display:block;
+  filter: saturate(1.02);
+}
+
+.photo-meta{
+  padding: 6px 2px;
+}
+
+.photo-meta h3{
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.photo-meta p{
+  margin-top: 10px;
+  color: rgba(255,255,255,0.76);
+  font-size: 0.98rem;
+  line-height: 1.65;
+}
+
     .video-meta{
       padding: 6px 2px;
     }
@@ -494,514 +704,849 @@
   </style>
 </head>
 
-<body>
-  <canvas id="three-canvas" aria-hidden="true"></canvas>
+  <body>
+    <canvas id="three-canvas" aria-hidden="true"></canvas>
 
-  <div class="topbar">
-    <div class="topbar-inner">
-      <a class="brand" href="#top">
-        <span class="brand-badge" aria-hidden="true"></span>
-        Sarker Sunzid Mahmud
-      </a>
-      <nav class="nav" aria-label="Primary">
-        <a href="#about">About</a>
-        <a href="#stack">Tech</a>
-        <a href="#projects">Projects</a>
-        <a href="#experience">Experience</a>
-        <a href="#creator">Content</a>
-        <a href="#contact">Contact</a>
-      </nav>
+    <div class="topbar">
+      <div class="topbar-inner">
+        <a class="brand" href="#top">
+          <span class="brand-badge" aria-hidden="true"></span>
+          Sarker Sunzid Mahmud
+        </a>
+        <nav class="nav" aria-label="Primary">
+          <a href="#about">About</a>
+          <a href="#stack">Tech</a>
+          <a href="#experience">Experience</a>
+          <a href="#projects">Projects</a>
+          <a href="#creator">Content</a>
+          <a href="#travel">Travelling</a>
+          <a href="#contact">Contact</a>
+        </nav>
+      </div>
     </div>
-  </div>
 
-  <main id="top" class="container">
-    <section class="hero fade-in">
-      <h1>Full-Stack Developer building reliable products with performance and clean architecture.</h1>
-      <p class="sub">
-        Based in Dortmund, Germany. I build scalable web applications using Laravel, Node.js, React, Angular, and TypeScript.
-        I care about performance, maintainability, and GDPR-friendly data handling.
-      </p>
+    <main id="top" class="container">
 
-      <div class="pill-row" role="list" aria-label="Highlights">
-        <div class="pill" role="listitem">5+ years professional experience</div>
-        <div class="pill" role="listitem">Laravel • React • Angular • Node.js</div>
-        <div class="pill" role="listitem">CI/CD • Docker • Kubernetes</div>
-        <div class="pill" role="listitem">English C1 • German A2 (improving)</div>
-      </div>
+      <!-- hero -->
+      <section class="hero fade-in">
+        <h1>Full-Stack Developer building reliable products with performance and clean architecture.</h1>
+        <p class="sub">
+          Based in Dortmund, Germany. I am a Full-Stack Developer with 5+ years of experience delivering web applications
+          across Europe and Asia. I enjoy API design, performance optimization, and building systems that teams can maintain long term.
+        </p>
 
-      <div class="cta-row" id="contact">
-        <a class="btn primary" href="mailto:sunzid02@gmail.com" rel="noopener">Email</a>
-        <a class="btn" href="https://www.linkedin.com/in/sarker-sunzid-mahmud" target="_blank" rel="noopener">LinkedIn</a>
-        <a class="btn" href="https://github.com/sunzid02" target="_blank" rel="noopener">GitHub</a>
-      </div>
 
-      <p class="small" style="margin-top: 12px;">
-        Previously: Atflow GmbH (Sep 2025 to Dec 2025). Currently open to new opportunities.
-      </p>
-    </section>
-
-    <section id="about" class="section fade-in">
-      <h2>About</h2>
-      <div class="grid two">
-        <div>
-          <p>
-            I am a Full-Stack Developer with 5+ years of experience delivering web applications across Europe and Asia.
-            I enjoy API design, performance optimization, and building systems that teams can maintain long term.
-          </p>
-          <p>
-            Recently, I have worked on time tracking and billing workflows, improved API response times through caching and query optimization,
-            and built internal web interfaces that reduced manual reporting effort.
-          </p>
-        </div>
-        <div>
-          <p style="margin-top: 0;">
-            <b>Focus areas</b><br />
-            • Backend APIs and clean architecture<br />
-            • Frontend web apps (React and Angular)<br />
-            • Performance, reliability, and security basics<br />
-            • DevOps fundamentals (Docker, Kubernetes, CI/CD)
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section id="stack" class="section fade-in">
-      <h2>Tech Stack</h2>
-      <div class="tech-grid" aria-label="Tech stack">
-        <div class="tech">PHP (Laravel, Symfony)</div>
-        <div class="tech">Node.js (Express)</div>
-        <div class="tech">React</div>
-        <div class="tech">Angular</div>
-        <div class="tech">TypeScript</div>
-        <div class="tech">REST APIs</div>
-        <div class="tech">GraphQL</div>
-        <div class="tech">MySQL</div>
-        <div class="tech">MongoDB</div>
-        <div class="tech">Kafka</div>
-        <div class="tech">Docker</div>
-        <div class="tech">Kubernetes</div>
-        <div class="tech">GitHub Actions</div>
-        <div class="tech">PHPUnit • Jest</div>
-      </div>
-    </section>
-
-    <section id="projects" class="section fade-in">
-      <h2>Projects</h2>
-      <p>Selected projects that reflect my day to day stack and the kind of problems I enjoy solving.</p>
-
-      <div class="cards" role="list">
-        <div class="card" role="listitem" tabindex="0" onclick="window.open('https://github.com/sunzid02/news-aggregator','_blank')">
-          <h3>News Aggregator</h3>
-          <p>Laravel 12 + React platform aggregating multi-source news via scheduled ingestion and RESTful APIs.</p>
-          <div class="meta">Laravel • React • DTO architecture • Search and filters</div>
+        <div class="pill-row" role="list" aria-label="Highlights">
+          <div class="pill" role="listitem">5+ years professional experience</div>
+          <div class="pill" role="listitem">Laravel • React • Angular • Node.js</div>
+          <div class="pill" role="listitem">CI/CD • Docker • Kubernetes</div>
+          <div class="pill" role="listitem">English C1 • German A2 (improving)</div>
         </div>
 
-        <div class="card" role="listitem" tabindex="0" onclick="window.open('https://github.com/sunzid02/SocialSite','_blank')">
-          <h3>Dev Connector</h3>
-          <p>Developer social network built with React, Node.js, and MongoDB with JWT authentication.</p>
-          <div class="meta">React • Node.js • MongoDB • JWT</div>
+        <div class="cta-row" id="contact">
+          <a class="btn primary" href="mailto:sunzid02@gmail.com" rel="noopener">Email</a>
+          <a class="btn" href="https://www.linkedin.com/in/sarker-sunzid-mahmud" target="_blank" rel="noopener">LinkedIn</a>
+          <a class="btn" href="https://github.com/sunzid02" target="_blank" rel="noopener">GitHub</a>
         </div>
 
-        <div class="card" role="listitem" tabindex="0">
-          <h3>Daylight Exposure Analysis</h3>
-          <p>Logistic regression and ROC analysis on sensor data to identify optimal daylight thresholds.</p>
-          <div class="meta">Python • scikit-learn • Data analysis</div>
-        </div>
-      </div>
-    </section>
+        <p class="small" style="margin-top: 12px;">
+          Previously: Atflow GmbH (Sep 2025 to Dec 2025). Currently open to new opportunities.
+        </p>
+      </section>
 
-    <section id="experience" class="section fade-in">
-      <h2>Experience</h2>
-      <div class="timeline">
-        <div class="role">
-          <div class="role-head">
-            <div class="role-title">Full Stack Developer (Part-time) | Atflow GmbH, Hamburg</div>
-            <div class="role-when">Sep 2025 to Dec 2025</div>
+      <!-- about -->
+      <section id="about" class="section fade-in">
+        <h2>About</h2>
+        <div class="grid two">
+          <div>
+            <p>
+              I am a Full-Stack Developer with 5+ years of experience delivering web applications across Europe and Asia.
+              I enjoy API design, performance optimization, and building systems that teams can maintain long term.
+            </p>
+            <p>
+              Beyond technical skills, I am someone who values clarity, ownership, and long term thinking.
+              I like understanding the why behind a problem, simplifying complexity, and leaving systems better
+              than I found them. Teams usually describe me as calm, reliable, and easy to collaborate with.
+            </p>
+
           </div>
-          <ul>
-            <li>Developed task and time tracking features with Laravel and React, enabling calendar-based hour allocation and accurate client billing.</li>
-            <li>Optimized DATEV-based billing workflows using task-time analytics and code reviews, reducing errors by around 20%.</li>
-          </ul>
-        </div>
-
-        <div class="role">
-          <div class="role-head">
-            <div class="role-title">Full Stack Developer (Part-time) | Konnektivität & Kommunikation GmbH, Hamm</div>
-            <div class="role-when">Aug 2021 to May 2025</div>
-          </div>
-          <ul>
-            <li>Reduced REST API response times by 30% through caching and endpoint optimization using PHP Slim.</li>
-            <li>Improved reporting performance by 25% via MySQL schema and index optimization.</li>
-            <li>Built and maintained Angular-based internal web apps, reducing manual reporting effort by 40% for teams.</li>
-          </ul>
-        </div>
-
-        <div class="role">
-          <div class="role-head">
-            <div class="role-title">Software Engineer | Echologyx, Dhaka</div>
-            <div class="role-when">Oct 2020 to May 2021</div>
-          </div>
-          <ul>
-            <li>Reduced page load times by 15% by optimizing JavaScript and CSS delivery and removing render-blocking resources.</li>
-            <li>Increased conversion rates by up to 25% through A/B and multivariate testing using Optimizely, VWO, and Google Optimize.</li>
-          </ul>
-        </div>
-
-        <div class="role">
-          <div class="role-head">
-            <div class="role-title">Software Engineer | REPTO Education Center, Dhaka</div>
-            <div class="role-when">May 2019 to May 2020</div>
-          </div>
-          <ul>
-            <li>Designed and scaled backend systems using Laravel, MySQL, and REST APIs for an e-learning platform with 50,000+ users.</li>
-            <li>Integrated job boards, exam systems, and premium memberships with SSLCommerz payments, increasing engagement by 35%.</li>
-          </ul>
-        </div>
-
-        <div class="role">
-          <div class="role-head">
-            <div class="role-title">Web Developer | Cloudwell Limited (PayWell), Dhaka</div>
-            <div class="role-when">Oct 2017 to Mar 2019</div>
-          </div>
-          <ul>
-            <li>Built secure, high-volume payment processing services in PHP handling thousands of daily transactions.</li>
-            <li>Automated sales reporting and dashboard generation using cron-based Excel integrations, reducing manual effort by 50%.</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <section id="creator" class="section fade-in">
-      <h2>Content Creator</h2>
-      <p>
-        I also create developer-focused content (short tutorials, interview prep, and practical engineering notes).
-        Here are a few videos. Thumbnails load first, and the player only loads when you press play.
-      </p>
-
-      <div class="slider" aria-label="Video slider">
-        <div class="slider-top">
-          <div class="hint">Use the arrows to browse. Press play to load the video.</div>
-          <div class="slider-controls">
-            <button class="icon-btn" id="prevBtn" type="button" aria-label="Previous video">‹</button>
-            <button class="icon-btn" id="nextBtn" type="button" aria-label="Next video">›</button>
+          <div>
+            <p style="margin-top: 0;">
+              <b>Focus areas</b><br />
+              • Backend APIs and clean architecture<br />
+              • Frontend web apps (React and Angular)<br />
+              • Performance, reliability, and security basics<br />
+              • DevOps fundamentals (Docker, Kubernetes, CI/CD)
+            </p>
           </div>
         </div>
+      </section>
 
-        <div class="slides" id="slides">
-          <!-- Slides injected by JS -->
+
+
+
+      <!-- tech stack -->
+      <section id="stack" class="section fade-in">
+        <h2>Tech Stack</h2>
+        <p style="margin-top:12px; color: rgba(255,255,255,0.78);">
+          Tools I use to build scalable products, ship reliably, and create content with AI support.
+        </p>
+
+        <!-- Filter bar -->
+        <div class="stack-filters" aria-label="Tech stack filters">
+          <button class="filter-btn active" type="button" data-filter="all">All</button>
+          <button class="filter-btn" type="button" data-filter="backend">Backend</button>
+          <button class="filter-btn" type="button" data-filter="frontend">Frontend</button>
+          <button class="filter-btn" type="button" data-filter="ai">AI</button>
+          <button class="filter-btn" type="button" data-filter="devops">DevOps</button>
+          <button class="filter-btn" type="button" data-filter="prompting">Prompting Tools</button>
+          <button class="filter-btn" type="button" data-filter="content">Content Creation</button>
         </div>
 
-        <div class="dots" id="dots" aria-label="Slide indicators"></div>
-      </div>
-    </section>
+        <div class="stack-groups" aria-label="Tech stack grouped">
+          <!-- Backend -->
+          <div class="stack-group" data-cat="backend">
+            <div class="stack-head">
+              <div class="stack-title">Backend</div>
+              <div class="stack-badge">APIs • Data • Architecture</div>
+            </div>
+            <div class="tech-grid">
+              <div class="tech" data-cat="backend"><span class="icon">🐘</span><span>PHP (Laravel, Symfony)</span></div>
+              <div class="tech" data-cat="backend"><span class="icon">🟢</span><span>Node.js (Express)</span></div>
+              <div class="tech" data-cat="backend"><span class="icon">🔗</span><span>REST APIs</span></div>
+              <div class="tech" data-cat="backend"><span class="icon">🧬</span><span>GraphQL</span></div>
+              <div class="tech" data-cat="backend"><span class="icon">🗄️</span><span>MySQL</span></div>
+              <div class="tech" data-cat="backend"><span class="icon">🍃</span><span>MongoDB</span></div>
+              <div class="tech" data-cat="backend"><span class="icon">📡</span><span>Kafka</span></div>
+            </div>
+          </div>
 
-    <section class="section fade-in">
-      <h2>Education and Certificates</h2>
-      <p>
-        Master’s in Data Science (ongoing), TU Dortmund. B.Sc. Computer Science and Engineering (AIUB).
-        Certificates include IBM Cloud-Native Architecture, Docker, Kubernetes, Generative AI foundations, and Kafka basics.
-      </p>
-    </section>
+          <!-- Frontend -->
+          <div class="stack-group" data-cat="frontend">
+            <div class="stack-head">
+              <div class="stack-title">Frontend</div>
+              <div class="stack-badge">UI • Web Apps</div>
+            </div>
+            <div class="tech-grid">
+              <div class="tech" data-cat="frontend"><span class="icon">⚛️</span><span>React</span></div>
+              <div class="tech" data-cat="frontend"><span class="icon">🅰️</span><span>Angular</span></div>
+              <div class="tech" data-cat="frontend"><span class="icon">📘</span><span>TypeScript</span></div>
+            </div>
+          </div>
 
-    <footer>
-      <div>© <span id="year"></span> Sarker Sunzid Mahmud</div>
-      <div class="small">Built as a single HTML file for GitHub profile hosting.</div>
-    </footer>
-  </main>
+          <!-- AI -->
+          <div class="stack-group" data-cat="ai">
+            <div class="stack-head">
+              <div class="stack-title">AI</div>
+              <div class="stack-badge">RAG • LLM • Automation</div>
+            </div>
+            <div class="tech-grid">
+              <div class="tech" data-cat="ai"><span class="icon">🐍</span><span>Python</span></div>
+              <div class="tech" data-cat="ai"><span class="icon">🧠</span><span>LLM Applications</span></div>
+              <div class="tech" data-cat="ai"><span class="icon">📄</span><span>RAG Pipelines</span></div>
+              <div class="tech" data-cat="ai"><span class="icon">🔗</span><span>LangChain</span></div>
+              <div class="tech" data-cat="ai"><span class="icon">📦</span><span>Vector Databases</span></div>
+              <div class="tech" data-cat="ai"><span class="icon">✨</span><span>Generative AI</span></div>
+            </div>
+          </div>
 
-  <script>
-    // --------- Content Creator Slider (lazy video load) ---------
-    const videos = [
-      {
-        id: "d2BziZU60us",
-        title: "Developer Content",
-        desc: "A practical engineering topic, explained with real examples.",
-        url: "https://www.youtube.com/watch?v=d2BziZU60us"
-      },
-      {
-        id: "PHp-iQHsOHQ",
-        title: "Developer Content",
-        desc: "Short and clear breakdown, focused on learning and execution.",
-        url: "https://www.youtube.com/watch?v=PHp-iQHsOHQ"
-      },
-      {
-        id: "NdIGFgBrxfM",
-        title: "Developer Content",
-        desc: "A topic that helps you think in systems and ship cleaner code.",
-        url: "https://www.youtube.com/watch?v=NdIGFgBrxfM"
-      },
-      {
-        id: "-Yxgw5RiCvY",
-        title: "Developer Content",
-        desc: "Another practical walkthrough that you can apply immediately.",
-        url: "https://youtu.be/-Yxgw5RiCvY"
-      },
-      {
-        id: "NLGpMFaFhf0",
-        title: "YouTube Short",
-        desc: "Short-form tip with a quick takeaway.",
-        url: "https://youtube.com/shorts/NLGpMFaFhf0"
+          <!-- DevOps -->
+          <div class="stack-group" data-cat="devops">
+            <div class="stack-head">
+              <div class="stack-title">DevOps</div>
+              <div class="stack-badge">Deploy • Scale • Ship</div>
+            </div>
+            <div class="tech-grid">
+              <div class="tech" data-cat="devops"><span class="icon">🐳</span><span>Docker</span></div>
+              <div class="tech" data-cat="devops"><span class="icon">☸️</span><span>Kubernetes</span></div>
+              <div class="tech" data-cat="devops"><span class="icon">⚙️</span><span>GitHub Actions</span></div>
+              <div class="tech" data-cat="devops"><span class="icon">🧪</span><span>PHPUnit • Jest</span></div>
+            </div>
+          </div>
+
+          <!-- Prompting tools -->
+          <div class="stack-group" data-cat="prompting">
+            <div class="stack-head">
+              <div class="stack-title">Prompting Tools</div>
+              <div class="stack-badge">Research • Ideation • Prompting</div>
+            </div>
+            <div class="tech-grid">
+              <div class="tech" data-cat="prompting"><span class="icon">💬</span><span>ChatGPT</span></div>
+              <div class="tech" data-cat="prompting"><span class="icon">🔷</span><span>Gemini</span></div>
+              <div class="tech" data-cat="prompting"><span class="icon">⚡</span><span>Grok</span></div>
+              <div class="tech" data-cat="prompting"><span class="icon">🧩</span><span>Canva</span></div>
+              <div class="tech" data-cat="prompting"><span class="icon">🔎</span><span>Perplexity</span></div>
+            </div>
+          </div>
+
+          <!-- Content creation -->
+          <div class="stack-group" data-cat="content">
+            <div class="stack-head">
+              <div class="stack-title">Content Creation</div>
+              <div class="stack-badge">Video • Audio</div>
+            </div>
+            <div class="tech-grid">
+              <div class="tech" data-cat="content"><span class="icon">🎬</span><span>CapCut</span></div>
+              <div class="tech" data-cat="content"><span class="icon">🎙️</span><span>ElevenLabs (Audio)</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+
+
+
+      <!-- experience -->
+      <section id="experience" class="section fade-in">
+        <h2>Experience</h2>
+        <div class="timeline">
+          <div class="role">
+            <div class="role-head">
+              <div class="role-title">Full Stack Developer (Part-time) | Atflow GmbH, Hamburg</div>
+              <div class="role-when">Sep 2025 to Dec 2025</div>
+            </div>
+            <ul>
+              <li>Developed task and time tracking features with Laravel and React, enabling calendar-based hour allocation and accurate client billing.</li>
+              <li>Optimized DATEV-based billing workflows using task-time analytics and code reviews, reducing errors by around 20%.</li>
+            </ul>
+          </div>
+
+          <div class="role">
+            <div class="role-head">
+              <div class="role-title">Full Stack Developer (Part-time) | Konnektivität & Kommunikation GmbH, Hamm</div>
+              <div class="role-when">Aug 2021 to May 2025</div>
+            </div>
+            <ul>
+              <li>Reduced REST API response times by 30% through caching and endpoint optimization using PHP Slim.</li>
+              <li>Improved reporting performance by 25% via MySQL schema and index optimization.</li>
+              <li>Built and maintained Angular-based internal web apps, reducing manual reporting effort by 40% for teams.</li>
+            </ul>
+          </div>
+
+          <div class="role">
+            <div class="role-head">
+              <div class="role-title">Software Engineer | Echologyx, Dhaka</div>
+              <div class="role-when">Oct 2020 to May 2021</div>
+            </div>
+            <ul>
+              <li>Reduced page load times by 15% by optimizing JavaScript and CSS delivery and removing render-blocking resources.</li>
+              <li>Increased conversion rates by up to 25% through A/B and multivariate testing using Optimizely, VWO, and Google Optimize.</li>
+            </ul>
+          </div>
+
+          <div class="role">
+            <div class="role-head">
+              <div class="role-title">Software Engineer | REPTO Education Center, Dhaka</div>
+              <div class="role-when">May 2019 to May 2020</div>
+            </div>
+            <ul>
+              <li>Designed and scaled backend systems using Laravel, MySQL, and REST APIs for an e-learning platform with 50,000+ users.</li>
+              <li>Integrated job boards, exam systems, and premium memberships with SSLCommerz payments, increasing engagement by 35%.</li>
+            </ul>
+          </div>
+
+          <div class="role">
+            <div class="role-head">
+              <div class="role-title">Web Developer | Cloudwell Limited (PayWell), Dhaka</div>
+              <div class="role-when">Oct 2017 to Mar 2019</div>
+            </div>
+            <ul>
+              <li>Built secure, high-volume payment processing services in PHP handling thousands of daily transactions.</li>
+              <li>Automated sales reporting and dashboard generation using cron-based Excel integrations, reducing manual effort by 50%.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- projects -->
+      <section id="projects" class="section fade-in">
+        <h2>Projects</h2>
+        <p>Selected projects that reflect my day to day stack and the kind of problems I enjoy solving.</p>
+
+        <div class="cards" role="list">
+          <div class="card" role="listitem" tabindex="0" onclick="window.open('https://github.com/sunzid02/news-aggregator','_blank')">
+            <h3>News Aggregator</h3>
+            <p>Laravel 12 + React platform aggregating multi-source news via scheduled ingestion and RESTful APIs.</p>
+            <div class="meta">Laravel • React • DTO architecture • Search and filters</div>
+          </div>
+
+          <div class="card" role="listitem" tabindex="0" onclick="window.open('https://github.com/sunzid02/SocialSite','_blank')">
+            <h3>Dev Connector</h3>
+            <p>Developer social network built with React, Node.js, and MongoDB with JWT authentication.</p>
+            <div class="meta">React • Node.js • MongoDB • JWT</div>
+          </div>
+
+          <div class="card" role="listitem" tabindex="0">
+            <h3>Daylight Exposure Analysis</h3>
+            <p>Logistic regression and ROC analysis on sensor data to identify optimal daylight thresholds.</p>
+            <div class="meta">Python • scikit-learn • Data analysis</div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- content -->
+      <section id="creator" class="section fade-in">
+        <h2>Content Creator</h2>
+        <p>
+I also create developer focused content like short tutorials, interview prep, and practical engineering notes. When I am not explaining serious tech things, I enjoy making funny and creative memes to show my imagination, keep learning fun, and remind everyone that engineers are allowed to laugh too.        </p>
+
+        <div class="slider" aria-label="Video slider">
+          <div class="slider-top">
+            <div class="hint">Use the arrows to browse. Press play to load the video.</div>
+            <div class="slider-controls">
+              <button class="icon-btn" id="prevBtn" type="button" aria-label="Previous video">‹</button>
+              <button class="icon-btn" id="nextBtn" type="button" aria-label="Next video">›</button>
+            </div>
+          </div>
+
+          <div class="slides" id="slides">
+            <!-- Slides injected by JS -->
+          </div>
+
+          <div class="dots" id="dots" aria-label="Slide indicators"></div>
+        </div>
+      </section>
+
+
+      <!-- travel mindset -->
+      <section id="travel" class="section fade-in">
+        <h2>Travel & Mindset</h2>
+
+        <p>
+          Traveling has shaped how I think and work. Experiencing different cultures across Europe helped me adapt quickly,
+          communicate clearly, and stay calm while solving complex problems in unfamiliar environments.
+        </p>
+
+        <div class="pill-row" style="margin-top:16px">
+          <div class="pill flag"><span class="emoji">🇧🇩</span><span class="name">Bangladesh</span></div>
+          <div class="pill flag"><span class="emoji">🇩🇪</span><span class="name">Germany</span></div>
+          <div class="pill flag"><span class="emoji">🇦🇹</span><span class="name">Austria</span></div>
+          <div class="pill flag"><span class="emoji">🇨🇭</span><span class="name">Switzerland</span></div>
+          <div class="pill flag"><span class="emoji">🇭🇷</span><span class="name">Croatia</span></div>
+          <div class="pill flag"><span class="emoji">🇪🇸</span><span class="name">Spain</span></div>
+          <div class="pill flag"><span class="emoji">🇹🇷</span><span class="name">Turkey</span></div>
+        </div>
+
+        <p style="margin-top:20px; font-style: italic; color: rgba(255,255,255,0.78);">
+          “A person who never made a mistake never tried anything new.”<br />
+          <span style="font-size:0.95rem; opacity:0.85;">Albert Einstein</span>
+        </p>
+      </section>
+
+      <!-- travel photos -->
+      <section id="travel-photos" class="section fade-in">
+        <h2>Travel Photos</h2>
+        <p>
+          A few moments from my travels. Use the arrows to browse.
+        </p>
+
+        <div class="slider" aria-label="Travel photo slider">
+          <div class="slider-top">
+            <div class="hint">Use the arrows to browse photos.</div>
+            <div class="slider-controls">
+              <button class="icon-btn" id="travelPrevBtn" type="button" aria-label="Previous photo">‹</button>
+              <button class="icon-btn" id="travelNextBtn" type="button" aria-label="Next photo">›</button>
+            </div>
+          </div>
+
+          <div class="slides" id="travelSlides">
+            <!-- Travel slides injected by JS -->
+          </div>
+
+          <div class="dots" id="travelDots" aria-label="Travel slide indicators"></div>
+        </div>
+      </section>
+
+      <!-- education -->
+      <section class="section fade-in">
+        <h2>Education & Learning</h2>
+        <p>
+          <b>M.Sc. Data Science (ongoing)</b>, TU Dortmund University<br />
+          <b>B.Sc. Computer Science & Engineering</b>, AIUB
+        </p>
+
+        <p>
+          I continuously upskill through hands on projects and certifications, especially in backend architecture,
+          data driven systems, and applied AI.
+        </p>
+
+        <div class="pill-row" style="margin-top:14px">
+          <div class="pill">IBM Cloud-Native Architecture</div>
+          <div class="pill">Docker & Kubernetes</div>
+          <div class="pill">Kafka Fundamentals</div>
+          <div class="pill">Generative AI Foundations</div>
+          <div class="pill">Python for Data & ML</div>
+        </div>
+      </section>
+
+      <footer>
+        <div>© <span id="year"></span> Sarker Sunzid Mahmud</div>
+        <div class="small">Built as a single HTML file for GitHub profile hosting.</div>
+      </footer>
+    </main>
+
+    <script>
+      // --------- Content Creator Slider (lazy video load) ---------
+      const videos = [
+        {
+          id: "d2BziZU60us",
+          title: "How I Met My Wife",
+          desc: "This Christmas, I wanted to give my wife something truly personal. Instead of buying a gift, I created one. Using AI, I turned our love story into a short animated film that shows how I met my soulmate, Rubaiya Zahin Sunnah. This is my first animated video and I dedicate it to my wife ❤️",
+          url: "https://www.youtube.com/watch?v=d2BziZU60us"
+        },
+        {
+          id: "PHp-iQHsOHQ",
+          title: "Why do we really need calculus in real life? ",
+          desc: "In this video, I explain calculus through a light romantic story with Mr. A and Mrs. B to make differentiation and integration easy and fun, with no formulas, no fear, just real understanding.",
+          url: "https://www.youtube.com/watch?v=PHp-iQHsOHQ"
+        },
+        {
+          id: "NdIGFgBrxfM",
+          title: "Async JavaScript Explained: Promises vs Observables vs RxJS (Simple Guide)",
+          desc: "In this video, I explain Promises, Observables, Subjects, BehaviorSubjects, and Signals in a simple, practical way, breaking down async concepts in JavaScript and Angular step by step, especially for developers who struggle with RxJS like I once did.",
+          url: "https://www.youtube.com/watch?v=NdIGFgBrxfM"
+        },
+        {
+          id: "-Yxgw5RiCvY",
+          title: "Rise of Hadi",
+          desc: "No more silence.",
+          url: "https://youtu.be/-Yxgw5RiCvY"
+        },
+        {
+          id: "NLGpMFaFhf0",
+          title: "Bio of Hadi - Short Cinematic Tribute",
+          desc: "A short cinematic tribute that tells the story of courage, resistance, and standing up against injustice, capturing the spirit of a voice that refused to stay silent.",
+          url: "https://youtube.com/shorts/NLGpMFaFhf0"
+        }
+      ];
+
+      const slidesEl = document.getElementById("slides");
+      const dotsEl = document.getElementById("dots");
+      const prevBtn = document.getElementById("prevBtn");
+      const nextBtn = document.getElementById("nextBtn");
+
+      let index = 0;
+
+      function thumbUrl(videoId){
+        return "https://img.youtube.com/vi/" + videoId + "/hqdefault.jpg";
       }
-    ];
 
-    const slidesEl = document.getElementById("slides");
-    const dotsEl = document.getElementById("dots");
-    const prevBtn = document.getElementById("prevBtn");
-    const nextBtn = document.getElementById("nextBtn");
+      function slideTemplate(v){
+        const safeTitle = (v.title || "Video").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        const safeDesc = (v.desc || "").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        const safeUrl = (v.url || "#").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
-    let index = 0;
+        return `
+          <div class="slide">
+            <div class="video-wrap" data-video="${v.id}">
+              <img loading="lazy" decoding="async" src="${thumbUrl(v.id)}" alt="Video thumbnail" />
+              <div class="play" role="button" tabindex="0" aria-label="Play video">
+                <span>▶ Play</span>
+              </div>
+            </div>
+            <div class="video-meta">
+              <h3>${safeTitle}</h3>
+              <p>${safeDesc}</p>
+              <p><a href="${safeUrl}" target="_blank" rel="noopener">Open on YouTube</a></p>
+            </div>
+          </div>
+        `;
+      }
 
-    function thumbUrl(videoId){
-      return "https://img.youtube.com/vi/" + videoId + "/hqdefault.jpg";
-    }
+      function render(){
+        slidesEl.innerHTML = videos.map(slideTemplate).join("");
+        dotsEl.innerHTML = videos.map((_, i) => `<button class="dot ${i===0?'active':''}" type="button" aria-label="Go to slide ${i+1}" data-i="${i}"></button>`).join("");
+        update();
+        bindSlidePlay();
+      }
 
-    function slideTemplate(v){
-      const safeTitle = (v.title || "Video").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-      const safeDesc = (v.desc || "").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-      const safeUrl = (v.url || "#").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      function update(){
+        slidesEl.style.transform = "translateX(" + (-index * 100) + "%)";
+        [...dotsEl.querySelectorAll(".dot")].forEach((d, i) => d.classList.toggle("active", i === index));
+      }
 
-      return `
-        <div class="slide">
-          <div class="video-wrap" data-video="${v.id}">
-            <img loading="lazy" decoding="async" src="${thumbUrl(v.id)}" alt="Video thumbnail" />
+      function goTo(i){
+        index = (i + videos.length) % videos.length;
+        update();
+        stopAllPlayers();
+      }
+
+      function next(){ goTo(index + 1); }
+      function prev(){ goTo(index - 1); }
+
+      function stopAllPlayers(){
+        // Replace iframes back to thumbnails to avoid multiple players running
+        document.querySelectorAll(".video-wrap").forEach(wrap => {
+          const iframe = wrap.querySelector("iframe");
+          if (!iframe) return;
+          const vid = wrap.getAttribute("data-video");
+          wrap.innerHTML = `
+            <img loading="lazy" decoding="async" src="${thumbUrl(vid)}" alt="Video thumbnail" />
             <div class="play" role="button" tabindex="0" aria-label="Play video">
               <span>▶ Play</span>
             </div>
-          </div>
-          <div class="video-meta">
-            <h3>${safeTitle}</h3>
-            <p>${safeDesc}</p>
-            <p><a href="${safeUrl}" target="_blank" rel="noopener">Open on YouTube</a></p>
-          </div>
-        </div>
-      `;
-    }
-
-    function render(){
-      slidesEl.innerHTML = videos.map(slideTemplate).join("");
-      dotsEl.innerHTML = videos.map((_, i) => `<button class="dot ${i===0?'active':''}" type="button" aria-label="Go to slide ${i+1}" data-i="${i}"></button>`).join("");
-      update();
-      bindSlidePlay();
-    }
-
-    function update(){
-      slidesEl.style.transform = "translateX(" + (-index * 100) + "%)";
-      [...dotsEl.querySelectorAll(".dot")].forEach((d, i) => d.classList.toggle("active", i === index));
-    }
-
-    function goTo(i){
-      index = (i + videos.length) % videos.length;
-      update();
-      stopAllPlayers();
-    }
-
-    function next(){ goTo(index + 1); }
-    function prev(){ goTo(index - 1); }
-
-    function stopAllPlayers(){
-      // Replace iframes back to thumbnails to avoid multiple players running
-      document.querySelectorAll(".video-wrap").forEach(wrap => {
-        const iframe = wrap.querySelector("iframe");
-        if (!iframe) return;
-        const vid = wrap.getAttribute("data-video");
-        wrap.innerHTML = `
-          <img loading="lazy" decoding="async" src="${thumbUrl(vid)}" alt="Video thumbnail" />
-          <div class="play" role="button" tabindex="0" aria-label="Play video">
-            <span>▶ Play</span>
-          </div>
-        `;
-      });
-      bindSlidePlay();
-    }
-
-    function loadPlayer(wrap){
-      const vid = wrap.getAttribute("data-video");
-      const src = "https://www.youtube-nocookie.com/embed/" + vid + "?autoplay=1&rel=0&modestbranding=1";
-      wrap.innerHTML = `
-        <iframe
-          title="YouTube video player"
-          src="${src}"
-          loading="lazy"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowfullscreen
-          referrerpolicy="strict-origin-when-cross-origin"
-          style="width:100%;height:100%;border:0;display:block;"
-        ></iframe>
-      `;
-    }
-
-    function bindSlidePlay(){
-      document.querySelectorAll(".video-wrap .play").forEach(playBtn => {
-        const wrap = playBtn.closest(".video-wrap");
-        const handler = () => loadPlayer(wrap);
-        playBtn.addEventListener("click", handler, { once: true });
-        playBtn.addEventListener("keydown", (e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            loadPlayer(wrap);
-          }
-        }, { once: true });
-      });
-    }
-
-    prevBtn.addEventListener("click", prev);
-    nextBtn.addEventListener("click", next);
-    dotsEl.addEventListener("click", (e) => {
-      const t = e.target;
-      if (t && t.matches(".dot")) {
-        const i = parseInt(t.getAttribute("data-i"), 10);
-        if (!Number.isNaN(i)) goTo(i);
+          `;
+        });
+        bindSlidePlay();
       }
-    });
 
-    // Keyboard support
-    window.addEventListener("keydown", (e) => {
-      if (e.key === "ArrowLeft") prev();
-      if (e.key === "ArrowRight") next();
-    });
+      function loadPlayer(wrap){
+        const vid = wrap.getAttribute("data-video");
+        const src = "https://www.youtube-nocookie.com/embed/" + vid + "?autoplay=1&rel=0&modestbranding=1";
+        wrap.innerHTML = `
+          <iframe
+            title="YouTube video player"
+            src="${src}"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+            referrerpolicy="strict-origin-when-cross-origin"
+            style="width:100%;height:100%;border:0;display:block;"
+          ></iframe>
+        `;
+      }
 
-    // Footer year
-    document.getElementById("year").textContent = new Date().getFullYear();
+      function bindSlidePlay(){
+        document.querySelectorAll(".video-wrap .play").forEach(playBtn => {
+          const wrap = playBtn.closest(".video-wrap");
+          const handler = () => loadPlayer(wrap);
+          playBtn.addEventListener("click", handler, { once: true });
+          playBtn.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              loadPlayer(wrap);
+            }
+          }, { once: true });
+        });
+      }
 
-    render();
+      prevBtn.addEventListener("click", prev);
+      nextBtn.addEventListener("click", next);
+      dotsEl.addEventListener("click", (e) => {
+        const t = e.target;
+        if (t && t.matches(".dot")) {
+          const i = parseInt(t.getAttribute("data-i"), 10);
+          if (!Number.isNaN(i)) goTo(i);
+        }
+      });
+
+      // Keyboard support
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowLeft") prev();
+        if (e.key === "ArrowRight") next();
+      });
+
+      // Footer year
+      document.getElementById("year").textContent = new Date().getFullYear();
+
+      render();
+    </script>
+
+    <script>
+      // --------- Three.js Background (performance-friendly) ---------
+      // Runs only after three.js is loaded.
+      (function initThree(){
+        function canRun(){
+          const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+          return !reduce && typeof THREE !== "undefined";
+        }
+        if (!canRun()) return;
+
+        const canvas = document.getElementById("three-canvas");
+        const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: "high-performance" });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 34;
+
+        // Lighting
+        const ambient = new THREE.AmbientLight(0xffffff, 0.22);
+        scene.add(ambient);
+
+        const light1 = new THREE.PointLight(0x6aa8ff, 1.2, 120);
+        light1.position.set(18, 18, 24);
+        scene.add(light1);
+
+        const light2 = new THREE.PointLight(0x00d4ff, 0.9, 120);
+        light2.position.set(-18, -12, 18);
+        scene.add(light2);
+
+        // Particle count adapts to screen size
+        const isSmall = window.matchMedia && window.matchMedia("(max-width: 768px)").matches;
+        const particleCount = isSmall ? 1200 : 2200;
+
+        const geo = new THREE.BufferGeometry();
+        const pos = new Float32Array(particleCount * 3);
+
+        for (let i = 0; i < particleCount * 3; i += 3) {
+          pos[i] = (Math.random() - 0.5) * 110;
+          pos[i + 1] = (Math.random() - 0.5) * 110;
+          pos[i + 2] = (Math.random() - 0.5) * 110;
+        }
+
+        geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+
+        const mat = new THREE.PointsMaterial({
+          size: 0.16,
+          color: 0x6aa8ff,
+          transparent: true,
+          opacity: 0.55,
+          depthWrite: false
+        });
+
+        const points = new THREE.Points(geo, mat);
+        scene.add(points);
+
+        // Subtle shapes
+        const shapes = [];
+        const geometries = [
+          new THREE.IcosahedronGeometry(3),
+          new THREE.OctahedronGeometry(3),
+          new THREE.TetrahedronGeometry(3)
+        ];
+
+        const shapeCount = isSmall ? 6 : 10;
+        for (let i = 0; i < shapeCount; i++) {
+          const g = geometries[Math.floor(Math.random() * geometries.length)];
+          const m = new THREE.MeshPhongMaterial({
+            color: 0x6aa8ff,
+            wireframe: true,
+            transparent: true,
+            opacity: 0.14
+          });
+          const mesh = new THREE.Mesh(g, m);
+          mesh.position.set((Math.random() - 0.5) * 70, (Math.random() - 0.5) * 70, (Math.random() - 0.5) * 50);
+          mesh.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
+          mesh.userData.rs = {
+            x: (Math.random() - 0.5) * 0.006,
+            y: (Math.random() - 0.5) * 0.006,
+            z: (Math.random() - 0.5) * 0.006
+          };
+          scene.add(mesh);
+          shapes.push(mesh);
+        }
+
+        // Mouse parallax (light)
+        let mouseX = 0;
+        let mouseY = 0;
+        window.addEventListener("mousemove", (e) => {
+          mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+          mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+        }, { passive: true });
+
+        // Pause when hidden
+        let running = true;
+        document.addEventListener("visibilitychange", () => {
+          running = !document.hidden;
+        });
+
+        function animate(){
+          if (!running) {
+            requestAnimationFrame(animate);
+            return;
+          }
+
+          points.rotation.y += 0.00035;
+          points.rotation.x += 0.00012;
+
+          shapes.forEach(s => {
+            s.rotation.x += s.userData.rs.x;
+            s.rotation.y += s.userData.rs.y;
+            s.rotation.z += s.userData.rs.z;
+          });
+
+          camera.position.x += (mouseX * 3.0 - camera.position.x) * 0.03;
+          camera.position.y += (mouseY * 3.0 - camera.position.y) * 0.03;
+          camera.lookAt(0, 0, 0);
+
+          const t = Date.now() * 0.0008;
+          light1.position.x = Math.sin(t) * 18;
+          light1.position.z = Math.cos(t) * 22;
+          light2.position.x = Math.cos(t * 0.9) * 18;
+          light2.position.z = Math.sin(t * 0.9) * 22;
+
+          renderer.render(scene, camera);
+          requestAnimationFrame(animate);
+        }
+        animate();
+
+        window.addEventListener("resize", () => {
+          camera.aspect = window.innerWidth / window.innerHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+      })();
+    </script>
+
+
+  <script>
+    // --------- Tech Stack Filter ---------
+    (function initStackFilter(){
+      const buttons = document.querySelectorAll(".filter-btn");
+      const groups = document.querySelectorAll(".stack-group");
+
+      if (!buttons.length || !groups.length) return;
+
+      function setActive(btn){
+        buttons.forEach(b => b.classList.toggle("active", b === btn));
+      }
+
+      function applyFilter(filter){
+        groups.forEach(g => {
+          const cat = g.getAttribute("data-cat");
+          const show = (filter === "all") || (cat === filter);
+          g.classList.toggle("is-hidden", !show);
+        });
+      }
+
+      buttons.forEach(btn => {
+        btn.addEventListener("click", () => {
+          const filter = btn.getAttribute("data-filter") || "all";
+          setActive(btn);
+          applyFilter(filter);
+        });
+      });
+
+      // default
+      applyFilter("all");
+    })();
   </script>
 
   <script>
-    // --------- Three.js Background (performance-friendly) ---------
-    // Runs only after three.js is loaded.
-    (function initThree(){
-      function canRun(){
-        const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        return !reduce && typeof THREE !== "undefined";
-      }
-      if (!canRun()) return;
-
-      const canvas = document.getElementById("three-canvas");
-      const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: "high-performance" });
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 1000);
-      camera.position.z = 34;
-
-      // Lighting
-      const ambient = new THREE.AmbientLight(0xffffff, 0.22);
-      scene.add(ambient);
-
-      const light1 = new THREE.PointLight(0x6aa8ff, 1.2, 120);
-      light1.position.set(18, 18, 24);
-      scene.add(light1);
-
-      const light2 = new THREE.PointLight(0x00d4ff, 0.9, 120);
-      light2.position.set(-18, -12, 18);
-      scene.add(light2);
-
-      // Particle count adapts to screen size
-      const isSmall = window.matchMedia && window.matchMedia("(max-width: 768px)").matches;
-      const particleCount = isSmall ? 1200 : 2200;
-
-      const geo = new THREE.BufferGeometry();
-      const pos = new Float32Array(particleCount * 3);
-
-      for (let i = 0; i < particleCount * 3; i += 3) {
-        pos[i] = (Math.random() - 0.5) * 110;
-        pos[i + 1] = (Math.random() - 0.5) * 110;
-        pos[i + 2] = (Math.random() - 0.5) * 110;
-      }
-
-      geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
-
-      const mat = new THREE.PointsMaterial({
-        size: 0.16,
-        color: 0x6aa8ff,
-        transparent: true,
-        opacity: 0.55,
-        depthWrite: false
-      });
-
-      const points = new THREE.Points(geo, mat);
-      scene.add(points);
-
-      // Subtle shapes
-      const shapes = [];
-      const geometries = [
-        new THREE.IcosahedronGeometry(3),
-        new THREE.OctahedronGeometry(3),
-        new THREE.TetrahedronGeometry(3)
+    // --------- Travel Photo Slider ---------
+    (function initTravelSlider(){
+      const travelPhotos = [
+        {
+          src: "assets/travel/germany.jpg",
+          title: "Germany",
+          desc: "Match day energy with a giant flag and even bigger excitement. Learned that passion, like software, scales very fast in the right environment."
+        },
+        {
+          src: "assets/travel/austria.jpg",
+          title: "Austria",
+          desc: "Paused mid ride on a quiet bridge, surrounded by mountains and fresh air. One of those moments where you realize debugging life is easier outdoors."
+        },
+        {
+          src: "assets/travel/switzerland.jpg",
+          title: "Switzerland",
+          desc: "Took a deep breath and then took off. Paragliding above the mountains reminded me that sometimes the best perspective comes from letting go."
+        },
+        {
+          src: "assets/travel/croatia.jpg",
+          title: "Croatia",
+          desc: "Proving that even legends need a break. Took the throne for a moment, no kingdom claimed, but confidence levels temporarily boosted."
+        },
+        {
+          src: "assets/travel/spain.jpg",
+          title: "Spain",
+          desc: "Climbed high enough to forget notifications existed. Mountains, open skies, and the feeling of earning the view step by step."
+        },
+        {
+          src: "assets/travel/turkey.jpg",
+          title: "Turkey",
+          desc: "Standing inside centuries of history and silence. A moment of reflection where time slows down and perspective widens."
+        },
+        {
+          src: "assets/travel/france.jpg",
+          title: "France",
+          desc: "Holding the Louvre Pyramid together with teamwork and perfect alignment. Architecture, symmetry, and a bit of creative engineering."
+        },
+        {
+          src: "assets/travel/bd.jpg",
+          title: "Bangladesh",
+          desc: "With my wife at the longest sea beach in the world. A reminder that sometimes the best journeys are the ones taken together."
+        }
       ];
 
-      const shapeCount = isSmall ? 6 : 10;
-      for (let i = 0; i < shapeCount; i++) {
-        const g = geometries[Math.floor(Math.random() * geometries.length)];
-        const m = new THREE.MeshPhongMaterial({
-          color: 0x6aa8ff,
-          wireframe: true,
-          transparent: true,
-          opacity: 0.14
-        });
-        const mesh = new THREE.Mesh(g, m);
-        mesh.position.set((Math.random() - 0.5) * 70, (Math.random() - 0.5) * 70, (Math.random() - 0.5) * 50);
-        mesh.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
-        mesh.userData.rs = {
-          x: (Math.random() - 0.5) * 0.006,
-          y: (Math.random() - 0.5) * 0.006,
-          z: (Math.random() - 0.5) * 0.006
-        };
-        scene.add(mesh);
-        shapes.push(mesh);
+      const slidesEl = document.getElementById("travelSlides");
+      const dotsEl = document.getElementById("travelDots");
+      const prevBtn = document.getElementById("travelPrevBtn");
+      const nextBtn = document.getElementById("travelNextBtn");
+
+      if (!slidesEl || !dotsEl || !prevBtn || !nextBtn) return;
+
+      let index = 0;
+
+      function esc(s){
+        return String(s || "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;");
       }
 
-      // Mouse parallax (light)
-      let mouseX = 0;
-      let mouseY = 0;
-      window.addEventListener("mousemove", (e) => {
-        mouseX = (e.clientX / window.innerWidth) * 2 - 1;
-        mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
-      }, { passive: true });
+      function slideTemplate(p){
+        const t = esc(p.title);
+        const d = esc(p.desc);
+        const src = esc(p.src);
 
-      // Pause when hidden
-      let running = true;
-      document.addEventListener("visibilitychange", () => {
-        running = !document.hidden;
-      });
+        return `
+          <div class="slide">
+            <div class="photo-wrap">
+              <img loading="lazy" decoding="async" src="${src}" alt="${t} photo" />
+            </div>
+            <div class="photo-meta">
+              <h3>${t}</h3>
+              <p>${d}</p>
+            </div>
+          </div>
+        `;
+      }
 
-      function animate(){
-        if (!running) {
-          requestAnimationFrame(animate);
-          return;
+      function update(){
+        slidesEl.style.transform = "translateX(" + (-index * 100) + "%)";
+        [...dotsEl.querySelectorAll(".dot")].forEach((dot, i) => {
+          dot.classList.toggle("active", i === index);
+        });
+      }
+
+      function goTo(i){
+        index = (i + travelPhotos.length) % travelPhotos.length;
+        update();
+      }
+
+      function next(){ goTo(index + 1); }
+      function prev(){ goTo(index - 1); }
+
+      function render(){
+        slidesEl.innerHTML = travelPhotos.map(slideTemplate).join("");
+        dotsEl.innerHTML = travelPhotos
+          .map((_, i) => `<button class="dot ${i===0?'active':''}" type="button" aria-label="Go to photo ${i+1}" data-i="${i}"></button>`)
+          .join("");
+        update();
+      }
+
+      prevBtn.addEventListener("click", prev);
+      nextBtn.addEventListener("click", next);
+
+      dotsEl.addEventListener("click", (e) => {
+        const t = e.target;
+        if (t && t.matches(".dot")) {
+          const i = parseInt(t.getAttribute("data-i"), 10);
+          if (!Number.isNaN(i)) goTo(i);
         }
-
-        points.rotation.y += 0.00035;
-        points.rotation.x += 0.00012;
-
-        shapes.forEach(s => {
-          s.rotation.x += s.userData.rs.x;
-          s.rotation.y += s.userData.rs.y;
-          s.rotation.z += s.userData.rs.z;
-        });
-
-        camera.position.x += (mouseX * 3.0 - camera.position.x) * 0.03;
-        camera.position.y += (mouseY * 3.0 - camera.position.y) * 0.03;
-        camera.lookAt(0, 0, 0);
-
-        const t = Date.now() * 0.0008;
-        light1.position.x = Math.sin(t) * 18;
-        light1.position.z = Math.cos(t) * 22;
-        light2.position.x = Math.cos(t * 0.9) * 18;
-        light2.position.z = Math.sin(t * 0.9) * 22;
-
-        renderer.render(scene, camera);
-        requestAnimationFrame(animate);
-      }
-      animate();
-
-      window.addEventListener("resize", () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
       });
+
+      // Keyboard support when section is visible and user navigates
+      window.addEventListener("keydown", (e) => {
+        const el = document.getElementById("travel-photos");
+        if (!el) return;
+        const rect = el.getBoundingClientRect();
+        const inView = rect.top < window.innerHeight && rect.bottom > 0;
+        if (!inView) return;
+
+        if (e.key === "ArrowLeft") prev();
+        if (e.key === "ArrowRight") next();
+      });
+
+      render();
     })();
   </script>
-</body>
+
+
+  </body>
 </html>
