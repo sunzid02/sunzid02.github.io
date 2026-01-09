@@ -1,0 +1,425 @@
+/* ===== RECOMMENDATIONS SECTION ===== */
+
+#recommendations.section {
+  padding: 80px 20px;
+}
+
+/* LinkedIn Badge Link */
+.recommendations-linkedin-link {
+  display: flex;
+  justify-content: center;
+  margin: 30px 0 50px;
+}
+
+.linkedin-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 28px;
+  background: linear-gradient(135deg, rgba(10, 102, 194, 0.15), rgba(10, 102, 194, 0.1));
+  border: 1.5px solid rgba(10, 102, 194, 0.3);
+  border-radius: 50px;
+  color: rgba(10, 102, 194, 1);
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.linkedin-badge svg {
+  transition: transform 0.3s ease;
+}
+
+.linkedin-badge:hover {
+  background: linear-gradient(135deg, rgba(10, 102, 194, 0.25), rgba(10, 102, 194, 0.15));
+  border-color: rgba(10, 102, 194, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(10, 102, 194, 0.3);
+}
+
+.linkedin-badge:hover svg {
+  transform: scale(1.1);
+}
+
+/* Recommendations Carousel */
+.recommendations-carousel {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 0;
+  position: relative;
+}
+
+/* Navigation Arrows */
+.rec-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.rec-arrow:hover:not(:disabled) {
+  background: rgba(59, 130, 246, 0.8);
+  border-color: rgba(59, 130, 246, 1);
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 8px 30px rgba(59, 130, 246, 0.5);
+}
+
+.rec-arrow:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.rec-arrow-left {
+  left: 20px;
+}
+
+.rec-arrow-right {
+  right: 20px;
+}
+
+/* Cards Track */
+.rec-track {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  padding: 60px 120px;
+  min-height: 600px;
+}
+
+/* Recommendation Card */
+.rec-card {
+  width: 550px;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 36px;
+  backdrop-filter: blur(20px);
+  cursor: pointer;
+  transition: all 0.5s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.rec-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, 
+    rgba(59, 130, 246, 0.8) 0%, 
+    rgba(147, 51, 234, 0.8) 100%
+  );
+}
+
+.rec-card.side {
+  transform: scale(0.85);
+  opacity: 0.4;
+  filter: blur(2px);
+}
+
+.rec-card.side:hover {
+  opacity: 0.6;
+  transform: scale(0.9);
+}
+
+.rec-card.active {
+  transform: scale(1.05);
+  opacity: 1;
+  filter: blur(0);
+  box-shadow: 
+    0 30px 80px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+  border-color: rgba(59, 130, 246, 0.3);
+  z-index: 10;
+}
+
+.rec-card.active::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, 
+    rgba(59, 130, 246, 0.05) 0%, 
+    transparent 50%,
+    rgba(147, 51, 234, 0.05) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* Header Section */
+.rec-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 24px;
+  position: relative;
+  z-index: 2;
+}
+
+.rec-photo {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 3px solid rgba(59, 130, 246, 0.3);
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+}
+
+.rec-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.rec-photo-placeholder {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.4), rgba(147, 51, 234, 0.4));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rec-photo-placeholder span {
+  font-size: 32px;
+  font-weight: 700;
+  color: white;
+}
+
+.rec-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.rec-name {
+  font-size: 20px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.95);
+  margin: 0 0 4px 0;
+  line-height: 1.3;
+}
+
+.rec-role {
+  font-size: 14px;
+  color: rgba(59, 130, 246, 0.9);
+  font-weight: 500;
+  margin: 0 0 2px 0;
+  line-height: 1.4;
+}
+
+.rec-company {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 400;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Quote Icon */
+.rec-quote-icon {
+  font-size: 80px;
+  font-family: Georgia, serif;
+  color: rgba(59, 130, 246, 0.15);
+  line-height: 1;
+  margin-bottom: -20px;
+  user-select: none;
+  position: relative;
+  z-index: 2;
+}
+
+/* Recommendation Text */
+.rec-text {
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 2;
+}
+
+.rec-text p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+  text-align: justify;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.rec-text p::-webkit-scrollbar {
+  width: 6px;
+}
+
+.rec-text p::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+}
+
+.rec-text p::-webkit-scrollbar-thumb {
+  background: rgba(59, 130, 246, 0.3);
+  border-radius: 3px;
+}
+
+.rec-text p::-webkit-scrollbar-thumb:hover {
+  background: rgba(59, 130, 246, 0.5);
+}
+
+/* LinkedIn Link */
+.rec-linkedin {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(59, 130, 246, 0.1));
+  border: 1.5px solid rgba(59, 130, 246, 0.3);
+  border-radius: 10px;
+  color: rgba(59, 130, 246, 1);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 2;
+}
+
+.rec-linkedin:hover {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.25), rgba(59, 130, 246, 0.15));
+  border-color: rgba(59, 130, 246, 0.5);
+  transform: translateX(2px);
+}
+
+/* Counter */
+.rec-counter {
+  text-align: center;
+  margin-top: 40px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* Dots */
+.rec-dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 30px;
+}
+
+.rec-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.rec-dot:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.2);
+}
+
+.rec-dot:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.rec-dot.active {
+  background: rgba(59, 130, 246, 0.9);
+  border-color: rgba(59, 130, 246, 0.9);
+  width: 32px;
+  border-radius: 5px;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .rec-track {
+    padding: 60px 100px;
+  }
+  .rec-card {
+    width: 500px;
+  }
+}
+
+@media (max-width: 992px) {
+  .rec-track {
+    padding: 60px 80px;
+    gap: 20px;
+  }
+  .rec-card {
+    width: 450px;
+  }
+  .rec-arrow {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@media (max-width: 768px) {
+  .rec-track {
+    padding: 40px 20px;
+  }
+  .rec-card {
+    width: 90%;
+    max-width: 500px;
+    padding: 28px;
+  }
+  .rec-card.side {
+    display: none;
+  }
+  .rec-card.active {
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 480px) {
+  .rec-card {
+    padding: 24px;
+  }
+  
+  .rec-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .rec-photo {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .rec-name {
+    font-size: 18px;
+  }
+  
+  .rec-text p {
+    font-size: 14px;
+    text-align: left;
+  }
+}

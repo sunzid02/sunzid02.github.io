@@ -1,0 +1,26 @@
+.ui-slider {
+  margin-top: 1.25rem;
+}
+
+.ui-slider-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.9rem;
+}
+
+.ui-slider-title {
+  font-size: 0.95rem;
+  color: #aab0bc;
+}
+
+.ui-slider-body {
+  position: relative;
+}
+
+.ui-slider-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.45rem;
+  margin-top: 0.9rem;
+}
