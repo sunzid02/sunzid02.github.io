@@ -87,11 +87,11 @@ export default function FooterView({ contact, brand }: Props) {
                   Recommendations
                 </button>
               </li>
-              <li>
+              {/* <li>
                 <button onClick={() => scrollToSection('contact')} className="footer-link">
                   Contact
                 </button>
-              </li>
+              </li> */}
             </ul>
           </div>
 
