@@ -159,7 +159,7 @@ export const siteModel: SiteModel = {
   ],
 
   hero: {
-    headline: "Full-Stack Developer | MSc Data Science @ TU Dortmund (Ongoing)",
+    headline: "Full-Stack Developer | MSc Data Science @ TU Dortmund",
     subline:
       "5+ years of building scalable web apps and APIs.",
     pills: [
@@ -280,7 +280,7 @@ export const siteModel: SiteModel = {
         title: "Full Stack Developer (Part-time) | Atflow GmbH, Hamburg, Germany",
         when: "Sep 2025 to Dec 2025",
         bullets: [
-          "Developed task and time tracking features with Laravel and Reac...ling calendar-based hour allocation and accurate client billing.",
+          "Developed task and time tracking features with Laravel and React for calendar-based hour allocation and accurate client billing.",
           "Optimized DATEV-based billing workflows using task-time analytics and code reviews, reducing errors by around 20%.",
         ],
       },
@@ -394,19 +394,19 @@ export const siteModel: SiteModel = {
       {
         id: "d2BziZU60us",
         title: "How I Met My Wife",
-        desc: "This Christmas, I wanted to give my wife s...his is my first animated video and I dedicate it to my wife ❤️",
+        desc: "This Christmas, I wanted to give my wife something special. This is my first animated video and I dedicate it to my wife ❤️",
         url: "https://www.youtube.com/watch?v=d2BziZU60us",
       },
       {
         id: "PHp-iQHsOHQ",
         title: "Why do we really need calculus in real life? ",
-        desc: "In this video, I explain calculus through ...y and fun, with no formulas, no fear, just real understanding.",
+        desc: "In this video, I explain calculus in a simple and fun way, with no formulas, no fear, just real understanding.",
         url: "https://www.youtube.com/watch?v=PHp-iQHsOHQ",
       },
       {
         id: "NdIGFgBrxfM",
         title: "Async JavaScript Explained: Promises vs Observables vs RxJS (Simple Guide)",
-        desc: "In this video, I explain Promises, Observa...ecially for developers who struggle with RxJS like I once did.",
+        desc: "In this video, I explain Promises, Observables — especially for developers who struggle with RxJS like I once did.",
         url: "https://www.youtube.com/watch?v=NdIGFgBrxfM",
       },
       {
@@ -574,7 +574,7 @@ export const siteModel: SiteModel = {
         role: "Developer",
         company: "Modern Citizens (UK)",
         photo: "assets/recommendations/sara.jpg",
-        text: "Sunzid is a brilliant programmer. I've had the pleasure of knowing him for about a year, as he worked as freelance developer for Daydot, helping us building A/B tests in busy periods. Above all, I was impressed with Sunzid's ability to quickly pick up feedbacks and improve day by day, adapting his code style to the company's standards. And, of course, his energy and enthusiasm. He would really be a great addition to any dev team and its without hesitation that I recommend Sunzid.",
+        text: "Sunzid is a brilliant programmer. I've had the pleasure of knowing him for about a year, as he worked as a freelance developer for Daydot, helping us build A/B tests in busy periods. Above all, I was impressed with Sunzid's ability to quickly pick up feedback and improve day by day, adapting his code style to the company's standards. And, of course, his energy and enthusiasm. He would really be a great addition to any dev team and it's without hesitation that I recommend Sunzid.",
       },
       {
         name: "Trevor Cookler",
