@@ -1588,3 +1588,10 @@ main.container {
   transform: scale(1.1) translateY(-4px);
   box-shadow: 0 12px 40px rgba(59, 130, 246, 0.4);
 }
+
+
+.hero-resume-group {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
