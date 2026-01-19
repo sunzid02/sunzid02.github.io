@@ -2,6 +2,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { TechModel } from "../../../../model/siteModel";
 import { useCubeAutoRotate } from "../../../hooks/useCubeAutoRotate";
 import { useHandControl } from "../../../hooks/useHandControl";
+import TechCameraView from "./TechCameraView";
+import TechStageView from "./TechStageView";
+
 
 type Props = { tech: TechModel };
 type Side = 0 | 1 | 2 | 3 | 4 | 5;
@@ -139,7 +142,7 @@ export default function TechCubeView({ tech }: Props) {
     setHandControl((v) => !v);
   };
 
-  const showPreview = handControl; // keep mounted always, just fade it
+  // const showPreview = handControl; // keep mounted always, just fade it
 
   return (
     <div className="tech-cube-wrap">
@@ -176,232 +179,32 @@ export default function TechCubeView({ tech }: Props) {
         </button>
       </div>
 
-      <div className="tech-stage">
-        <div
-          className="scene"
-          onMouseEnter={() => setIsInteracting(true)}
-          onMouseLeave={() => setIsInteracting(false)}
-        >
-          <div
-            className="tech-cube"
-            style={{
-              transform: `rotateX(${rx}deg) rotateY(${ry}deg)`,
-              transition: drag.current.on ? "none" : "transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1)",
-            }}
-            onPointerDown={onPointerDown}
-            onPointerMove={onPointerMove}
-            onPointerUp={onPointerUp}
-            onPointerCancel={onPointerUp}
-          >
-            {faces.map((face, i) => (
-              <div
-                key={face.title}
-                className={`tech-face tech-face-${i} ${active === i ? "is-active" : ""}`}
-              >
-                <div className="tech-face-inner">
-                  <div className="tech-face-head">
-                    <h3>{face.title}</h3>
-                    {face.badge && <span className="tech-face-badge">{face.badge}</span>}
-                  </div>
+      <TechStageView
+        rx={rx}
+        ry={ry}
+        active={active}
+        faces={faces}
+        drag={drag}
+        handControl={handControl}
+        handGrabbing={handGrabbing}
+        setIsInteracting={setIsInteracting}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+      />
 
-                  <div className="tech-face-items">
-                    {face.items.map((it) => (
-                      <span key={it} className="tech-chip">
-                        {it}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
 
-        <p className="tech-tip">
-          {handControl
-            ? handGrabbing
-              ? "Pinch = grabbing. Move your hand to rotate."
-              : "Pinch thumb + index to grab the cube."
-            : "Drag the cube to rotate • Click tabs to view each side"}
-        </p>
-      </div>
+      <TechCameraView
+          visible={handControl}
+          videoRef={handVideoRef}
+          canvasRef={handCanvasRef}
+          handDetected={handDetected}
+          handGrabbing={handGrabbing}
+          handError={handError}
+        />
 
-      <div className="tech-camera">
-        <div style={{ position: "relative", display: "inline-block" }}>
-          <video
-            ref={handVideoRef}
-            autoPlay
-            playsInline
-            muted
-            width={320}
-            height={240}
-            style={{
-              width: 320,
-              height: 240,
-              borderRadius: 12,
-              transform: "scaleX(-1)",
-              pointerEvents: "none",
-              opacity: showPreview ? 1 : 0,
-              visibility: showPreview ? "visible" : "hidden",
-              transition: "opacity 0.2s ease, visibility 0.2s ease",
-            }}
-          />
 
-          <canvas
-            ref={handCanvasRef}
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: 320,
-              height: 240,
-              borderRadius: 12,
-              pointerEvents: "none",
-              transform: "scaleX(-1)",
-              opacity: showPreview ? 1 : 0,
-              visibility: showPreview ? "visible" : "hidden",
-              transition: "opacity 0.2s ease, visibility 0.2s ease",
-            }}
-          />
 
-          {handControl && (
-            <div
-              style={{
-                position: "absolute",
-                top: 12,
-                right: 12,
-                display: "flex",
-                alignItems: "center",
-                gap: 8,
-                padding: "6px 12px",
-                borderRadius: 20,
-                backgroundColor: "rgba(0, 0, 0, 0.7)",
-                backdropFilter: "blur(8px)",
-              }}
-            >
-              <div
-                style={{
-                  width: 8,
-                  height: 8,
-                  borderRadius: "50%",
-                  backgroundColor: handDetected ? "#4ade80" : "#ef4444",
-                  boxShadow: handDetected ? "0 0 8px #4ade80" : "0 0 8px #ef4444",
-                  transition: "all 0.3s ease",
-                }}
-              />
-              <span
-                style={{
-                  color: "white",
-                  fontSize: "0.75rem",
-                  fontWeight: 500,
-                }}
-              >
-                {handDetected ? (handGrabbing ? "Grabbing" : "Tracking") : "No hand"}
-              </span>
-            </div>
-          )}
-
-          {handControl && !handDetected && !handError && (
-            <div
-              style={{
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                fontSize: "4rem",
-                opacity: 0.25,
-                pointerEvents: "none",
-                animation: "pulse 2s ease-in-out infinite",
-              }}
-            >
-              ✋
-            </div>
-          )}
-        </div>
-
-        {handControl && !handError && (
-          <div
-            style={{
-              marginTop: 12,
-              padding: "12px 16px",
-              backgroundColor: handDetected ? "rgba(74, 222, 128, 0.1)" : "rgba(148, 163, 184, 0.1)",
-              borderRadius: 8,
-              border: `1px solid ${
-                handDetected ? "rgba(74, 222, 128, 0.3)" : "rgba(148, 163, 184, 0.3)"
-              }`,
-              transition: "all 0.3s ease",
-            }}
-          >
-            <p
-              style={{
-                margin: 0,
-                fontSize: "0.875rem",
-                color: handDetected ? "#4ade80" : "#94a3b8",
-                fontWeight: 500,
-              }}
-            >
-              {handDetected
-                ? handGrabbing
-                  ? "✓ Grab active. Move hand to rotate."
-                  : "✓ Hand detected. Pinch to grab."
-                : "Show your hand to the camera"}
-            </p>
-
-            {!handDetected && (
-              <p
-                style={{
-                  margin: "4px 0 0 0",
-                  fontSize: "0.75rem",
-                  color: "#64748b",
-                  opacity: 0.85,
-                }}
-              >
-                Make sure your hand is visible and well lit
-              </p>
-            )}
-          </div>
-        )}
-
-        {handError && (
-          <div
-            style={{
-              marginTop: 12,
-              padding: "12px 16px",
-              backgroundColor: "rgba(239, 68, 68, 0.1)",
-              borderRadius: 8,
-              border: "1px solid rgba(239, 68, 68, 0.3)",
-            }}
-          >
-            <p
-              style={{
-                margin: 0,
-                color: "#ef4444",
-                fontSize: "0.875rem",
-                fontWeight: 500,
-              }}
-            >
-              ⚠️ {handError}
-            </p>
-            <p
-              style={{
-                margin: "4px 0 0 0",
-                fontSize: "0.75rem",
-                color: "#ef4444",
-                opacity: 0.85,
-              }}
-            >
-              Please allow camera access to use hand control
-            </p>
-          </div>
-        )}
-      </div>
-
-      <style>{`
-        @keyframes pulse {
-          0%, 100% { opacity: 0.18; transform: translate(-50%, -50%) scale(1); }
-          50% { opacity: 0.35; transform: translate(-50%, -50%) scale(1.08); }
-        }
-      `}</style>
     </div>
   );
 }
