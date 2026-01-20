@@ -139,7 +139,7 @@ export default function TechCubeView({ tech }: Props) {
     setHandControl((v) => !v);
   };
 
-  // const showPreview = handControl; // keep mounted always, just fade it
+  const showPreview = handControl; // keep mounted always, just fade it
 
   return (
     <div className="tech-cube-wrap">
@@ -225,40 +225,47 @@ export default function TechCubeView({ tech }: Props) {
             : "Drag the cube to rotate • Click tabs to view each side"}
         </p>
       </div>
+      
+            
+      <div className="tech-camera">
+        <div style={{ position: "relative", display: "inline-block" }}>
+          <video
+            ref={handVideoRef}
+            autoPlay
+            playsInline
+            muted
+            width={320}
+            height={240}
+            style={{
+              width: 320,
+              height: 240,
+              borderRadius: 12,
+              transform: "scaleX(-1)",
+              pointerEvents: "none",
+              opacity: showPreview ? 1 : 0,
+              visibility: showPreview ? "visible" : "hidden",
+              transition: "opacity 0.2s ease, visibility 0.2s ease",
+            }}
+          />
 
-      {handControl && (
-        <div className="tech-camera">
-          <div style={{ position: "relative", display: "inline-block" }}>
-            <video
-              ref={handVideoRef}
-              autoPlay
-              playsInline
-              muted
-              width={320}
-              height={240}
-              style={{
-                width: 320,
-                height: 240,
-                borderRadius: 12,
-                transform: "scaleX(-1)",
-                pointerEvents: "none",
-              }}
-            />
+          <canvas
+            ref={handCanvasRef}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: 320,
+              height: 240,
+              borderRadius: 12,
+              pointerEvents: "none",
+              transform: "scaleX(-1)",
+              opacity: showPreview ? 1 : 0,
+              visibility: showPreview ? "visible" : "hidden",
+              transition: "opacity 0.2s ease, visibility 0.2s ease",
+            }}
+          />
 
-            <canvas
-              ref={handCanvasRef}
-              style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: 320,
-                height: 240,
-                borderRadius: 12,
-                pointerEvents: "none",
-                transform: "scaleX(-1)",
-              }}
-            />
-
+          {handControl && (
             <div
               style={{
                 position: "absolute",
@@ -283,94 +290,112 @@ export default function TechCubeView({ tech }: Props) {
                   transition: "all 0.3s ease",
                 }}
               />
-              <span style={{ color: "white", fontSize: "0.75rem", fontWeight: 500 }}>
-                {handDetected ? (handGrabbing ? "Grabbing" : "Tracking") : "No hand"}
-              </span>
-            </div>
-
-            {!handDetected && !handError && (
-              <div
+              <span
                 style={{
-                  position: "absolute",
-                  top: "50%",
-                  left: "50%",
-                  transform: "translate(-50%, -50%)",
-                  fontSize: "4rem",
-                  opacity: 0.25,
-                  pointerEvents: "none",
-                  animation: "pulse 2s ease-in-out infinite",
-                }}
-              >
-                ✋
-              </div>
-            )}
-          </div>
-
-          {!handError && (
-            <div
-              style={{
-                marginTop: 12,
-                padding: "12px 16px",
-                backgroundColor: handDetected
-                  ? "rgba(74, 222, 128, 0.1)"
-                  : "rgba(148, 163, 184, 0.1)",
-                borderRadius: 8,
-                border: `1px solid ${
-                  handDetected ? "rgba(74, 222, 128, 0.3)" : "rgba(148, 163, 184, 0.3)"
-                }`,
-                transition: "all 0.3s ease",
-              }}
-            >
-              <p
-                style={{
-                  margin: 0,
-                  fontSize: "0.875rem",
-                  color: handDetected ? "#4ade80" : "#94a3b8",
+                  color: "white",
+                  fontSize: "0.75rem",
                   fontWeight: 500,
                 }}
               >
-                {handDetected
-                  ? handGrabbing
-                    ? "✓ Grab active. Move hand to rotate."
-                    : "✓ Hand detected. Pinch to grab."
-                  : "Show your hand to the camera"}
-              </p>
-
-              {!handDetected && (
-                <p
-                  style={{
-                    margin: "4px 0 0 0",
-                    fontSize: "0.75rem",
-                    color: "#64748b",
-                    opacity: 0.85,
-                  }}
-                >
-                  Make sure your hand is visible and well lit
-                </p>
-              )}
+                {handDetected ? (handGrabbing ? "Grabbing" : "Tracking") : "No hand"}
+              </span>
             </div>
           )}
 
-          {handError && (
+          {handControl && !handDetected && !handError && (
             <div
               style={{
-                marginTop: 12,
-                padding: "12px 16px",
-                backgroundColor: "rgba(239, 68, 68, 0.1)",
-                borderRadius: 8,
-                border: "1px solid rgba(239, 68, 68, 0.3)",
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                fontSize: "4rem",
+                opacity: 0.25,
+                pointerEvents: "none",
+                animation: "pulse 2s ease-in-out infinite",
               }}
             >
-              <p style={{ margin: 0, color: "#ef4444", fontSize: "0.875rem", fontWeight: 500 }}>
-                ⚠️ {handError}
-              </p>
-              <p style={{ margin: "4px 0 0 0", fontSize: "0.75rem", color: "#ef4444", opacity: 0.85 }}>
-                Please allow camera access to use hand control
-              </p>
+              ✋
             </div>
           )}
         </div>
-      )}
+
+        {handControl && !handError && (
+          <div
+            style={{
+              marginTop: 12,
+              padding: "12px 16px",
+              backgroundColor: handDetected ? "rgba(74, 222, 128, 0.1)" : "rgba(148, 163, 184, 0.1)",
+              borderRadius: 8,
+              border: `1px solid ${
+                handDetected ? "rgba(74, 222, 128, 0.3)" : "rgba(148, 163, 184, 0.3)"
+              }`,
+              transition: "all 0.3s ease",
+            }}
+          >
+            <p
+              style={{
+                margin: 0,
+                fontSize: "0.875rem",
+                color: handDetected ? "#4ade80" : "#94a3b8",
+                fontWeight: 500,
+              }}
+            >
+              {handDetected
+                ? handGrabbing
+                  ? "✓ Grab active. Move hand to rotate."
+                  : "✓ Hand detected. Pinch to grab."
+                : "Show your hand to the camera"}
+            </p>
+
+            {!handDetected && (
+              <p
+                style={{
+                  margin: "4px 0 0 0",
+                  fontSize: "0.75rem",
+                  color: "#64748b",
+                  opacity: 0.85,
+                }}
+              >
+                Make sure your hand is visible and well lit
+              </p>
+            )}
+          </div>
+        )}
+
+        {handError && (
+          <div
+            style={{
+              marginTop: 12,
+              padding: "12px 16px",
+              backgroundColor: "rgba(239, 68, 68, 0.1)",
+              borderRadius: 8,
+              border: "1px solid rgba(239, 68, 68, 0.3)",
+            }}
+          >
+            <p
+              style={{
+                margin: 0,
+                color: "#ef4444",
+                fontSize: "0.875rem",
+                fontWeight: 500,
+              }}
+            >
+              ⚠️ {handError}
+            </p>
+            <p
+              style={{
+                margin: "4px 0 0 0",
+                fontSize: "0.75rem",
+                color: "#ef4444",
+                opacity: 0.85,
+              }}
+            >
+              Please allow camera access to use hand control
+            </p>
+          </div>
+        )}
+      </div>
 
       <style>{`
         @keyframes pulse {
