@@ -7,24 +7,15 @@ type Params = {
   enabled: boolean;
   videoEl: React.RefObject<HTMLVideoElement | null>;
   canvasEl?: React.RefObject<HTMLCanvasElement | null>;
-
-  // Important: pass current rotation via ref so hand starts from your cube's current state
   rotationRef: React.RefObject<Rotation>;
-
-  // update the same rotateX/rotateY state you already use
   onRotate: (rx: number, ry: number) => void;
-
   onHandDetected?: (detected: boolean) => void;
   onGrabChange?: (grabbing: boolean) => void;
   onError?: (msg: string) => void;
-
-  // tuning
-  pinchThreshold?: number; // normalized distance, smaller = harder pinch
-  degPerNormX?: number; // left right -> Y degrees
-  degPerNormY?: number; // up down -> X degrees
-  clampX?: number; // 0 disables clamp, else clamps to [-clampX, +clampX]
-  inertiaFriction?: number; // 0..1, higher = longer spin
-  smoothing?: number; // 0..1, higher = smoother
+  pinchThreshold?: number;
+  degPerNormX?: number;
+  degPerNormY?: number;
+  clampX?: number;
 };
 
 export function useHandControl({
@@ -36,150 +27,279 @@ export function useHandControl({
   onHandDetected,
   onGrabChange,
   onError,
-
-  pinchThreshold = 0.05,
-  degPerNormX = 520,
-  degPerNormY = 420,
+  pinchThreshold = 0.07,
+  degPerNormX = 500,
+  degPerNormY = 400,
   clampX = 80,
-  inertiaFriction = 0.92,
-  smoothing = 0.35,
 }: Params) {
-  const enabledRef = useRef(enabled);
-  const rafRef = useRef<number | null>(null);
-  const streamRef = useRef<MediaStream | null>(null);
-  const landmarkerRef = useRef<HandLandmarker | null>(null);
-  const initTokenRef = useRef(0);
-  const processingRef = useRef(false);
-
-  const onRotateRef = useRef(onRotate);
-  const onDetectedRef = useRef(onHandDetected);
-  const onGrabRef = useRef(onGrabChange);
-  const onErrorRef = useRef(onError);
-
+  // Stable callback refs
+  const callbacksRef = useRef({ onRotate, onHandDetected, onGrabChange, onError });
+  
   useEffect(() => {
-    enabledRef.current = enabled;
-  }, [enabled]);
-
+    callbacksRef.current = { onRotate, onHandDetected, onGrabChange, onError };
+  }, [onRotate, onHandDetected, onGrabChange, onError]);
+  
   useEffect(() => {
-    onRotateRef.current = onRotate;
-  }, [onRotate]);
-
-  useEffect(() => {
-    onDetectedRef.current = onHandDetected;
-  }, [onHandDetected]);
-
-  useEffect(() => {
-    onGrabRef.current = onGrabChange;
-  }, [onGrabChange]);
-
-  useEffect(() => {
-    onErrorRef.current = onError;
-  }, [onError]);
-
-  useEffect(() => {
-    const stopAll = () => {
-      if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current);
-        rafRef.current = null;
-      }
-
-      if (landmarkerRef.current) {
-        try {
-          landmarkerRef.current.close();
-        } catch {
-          // ignore
-        }
-        landmarkerRef.current = null;
-      }
-
-      if (streamRef.current) {
-        streamRef.current.getTracks().forEach((t) => t.stop());
-        streamRef.current = null;
-      }
-
-      const v = videoEl.current;
-      if (v) v.srcObject = null;
-
-      const c = canvasEl?.current;
-      if (c) {
-        const ctx = c.getContext("2d");
-        ctx?.clearRect(0, 0, c.width, c.height);
-      }
-
-      processingRef.current = false;
+    if (!enabled) return;
+    
+    const video = videoEl.current;
+    const canvas = canvasEl?.current ?? null;
+    if (!video) return;
+    
+    let aborted = false;
+    let stream: MediaStream | null = null;
+    let landmarker: HandLandmarker | null = null;
+    let rafId: number | null = null;
+    
+    // Hand state
+    let detected = false;
+    let grabbing = false;
+    let smoothCx = 0.5;
+    let smoothCy = 0.5;
+    let prevCx = 0.5;
+    let prevCy = 0.5;
+    let velX = 0;
+    let velY = 0;
+    let pinchCount = 0;
+    let lastVideoTime = -1;
+    let frameCounter = 0;
+    const PROCESS_EVERY_N_FRAMES = 3; // Process every 2nd frame for better performance
+    
+    const wrap360 = (deg: number) => {
+      const m = deg % 360;
+      return m < 0 ? m + 360 : m;
     };
-
-    if (!enabled) {
-      stopAll();
-      onDetectedRef.current?.(false);
-      onGrabRef.current?.(false);
-      return;
-    }
-
-    initTokenRef.current += 1;
-    const myToken = initTokenRef.current;
-
-    const run = async () => {
+    
+    const clamp = (val: number, min: number, max: number) => 
+      Math.max(min, Math.min(max, val));
+    
+    const drawHand = (hand: Array<{ x: number; y: number }>) => {
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+      
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      // Key points
+      const pts = [0, 4, 8, 12, 16, 20];
+      ctx.fillStyle = "rgba(74, 222, 128, 0.9)";
+      for (const i of pts) {
+        ctx.beginPath();
+        ctx.arc(hand[i].x * canvas.width, hand[i].y * canvas.height, 6, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      
+      // Pinch line
+      const thumb = hand[4];
+      const index = hand[8];
+      ctx.strokeStyle = grabbing ? "#f97316" : "#94a3b8";
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(thumb.x * canvas.width, thumb.y * canvas.height);
+      ctx.lineTo(index.x * canvas.width, index.y * canvas.height);
+      ctx.stroke();
+    };
+    
+    const processFrame = () => {
+      if (!landmarker || !video) return;
+      if (video.readyState < 2) return;
+      if (video.currentTime === lastVideoTime) return;
+      
+      lastVideoTime = video.currentTime;
+      
+      // Skip frames for better camera performance
+      frameCounter++;
+      if (frameCounter % PROCESS_EVERY_N_FRAMES !== 0) return;
+      
       try {
-        const v = videoEl.current;
-        if (!v) throw new Error("Video element not mounted");
-
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: {
-            facingMode: "user",
-            width: { ideal: 320 },
-            height: { ideal: 180 },
+        const result = landmarker.detectForVideo(video, performance.now());
+        const handFound = !!(result.landmarks?.length);
+        
+        if (handFound) {
+          const hand = result.landmarks[0];
+          
+          if (!detected) {
+            detected = true;
+            callbacksRef.current.onHandDetected?.(true);
+          }
+          
+          // Hand center
+          const wrist = hand[0];
+          const mid = hand[9];
+          const pinky = hand[17];
+          const cx = (wrist.x + mid.x + pinky.x) / 3;
+          const cy = (wrist.y + mid.y + pinky.y) / 3;
+          
+          // Smooth
+          smoothCx += (cx - smoothCx) * 0.4;
+          smoothCy += (cy - smoothCy) * 0.4;
+          
+          // Pinch
+          const thumb = hand[4];
+          const index = hand[8];
+          const dist = Math.hypot(thumb.x - index.x, thumb.y - index.y);
+          const isPinching = dist < pinchThreshold;
+          
+          // Debounce
+          if (isPinching) {
+            pinchCount = Math.min(pinchCount + 1, 3);
+          } else {
+            pinchCount = Math.max(pinchCount - 1, 0);
+          }
+          
+          const rot = rotationRef.current;
+          
+          // Grab on
+          if (pinchCount >= 2 && !grabbing) {
+            grabbing = true;
+            callbacksRef.current.onGrabChange?.(true);
+            prevCx = smoothCx;
+            prevCy = smoothCy;
+            velX = 0;
+            velY = 0;
+          }
+          
+          // Grab off
+          if (pinchCount === 0 && grabbing) {
+            grabbing = false;
+            callbacksRef.current.onGrabChange?.(false);
+          }
+          
+          if (grabbing) {
+            const dx = smoothCx - prevCx;
+            const dy = smoothCy - prevCy;
+            prevCx = smoothCx;
+            prevCy = smoothCy;
+            
+            const rotY = dx * degPerNormX;
+            const rotX = -dy * degPerNormY;
+            
+            velY = rotY;
+            velX = rotX;
+            
+            let newRy = wrap360(rot.ry + rotY);
+            let newRx = rot.rx + rotX;
+            
+            if (clampX > 0) {
+              newRx = clamp(newRx, -clampX, clampX);
+            }
+            
+            callbacksRef.current.onRotate(newRx, newRy);
+          } else {
+            // Inertia
+            const speed = Math.abs(velX) + Math.abs(velY);
+            if (speed > 0.05) {
+              velX *= 0.93;
+              velY *= 0.93;
+              
+              let newRy = wrap360(rot.ry + velY);
+              let newRx = rot.rx + velX;
+              
+              if (clampX > 0) {
+                newRx = clamp(newRx, -clampX, clampX);
+              }
+              
+              callbacksRef.current.onRotate(newRx, newRy);
+            } else {
+              velX = 0;
+              velY = 0;
+            }
+          }
+          
+          drawHand(hand);
+        } else {
+          if (detected) {
+            detected = false;
+            callbacksRef.current.onHandDetected?.(false);
+          }
+          if (grabbing) {
+            grabbing = false;
+            callbacksRef.current.onGrabChange?.(false);
+          }
+          pinchCount = 0;
+          
+          if (canvas) {
+            const ctx = canvas.getContext("2d");
+            ctx?.clearRect(0, 0, canvas.width, canvas.height);
+          }
+        }
+      } catch (err) {
+        console.warn("[Hand] Frame error:", err);
+      }
+    };
+    
+    const loop = () => {
+      if (aborted) return;
+      rafId = requestAnimationFrame(loop);
+      processFrame();
+    };
+    
+    const init = async () => {
+      try {
+        // Get camera
+        stream = await navigator.mediaDevices.getUserMedia({
+          video: { 
+            facingMode: "user", 
+            width: { ideal: 160 },    // Reduced from 320
+            height: { ideal: 120 },   // Reduced from 240  
+            frameRate: { ideal: 20, max: 30 }  // Lower frame rate
           },
           audio: false,
         });
-
-        if (initTokenRef.current !== myToken) {
-          stream.getTracks().forEach((t) => t.stop());
+        
+        if (aborted) {
+          stream.getTracks().forEach(t => t.stop());
           return;
         }
-
-        streamRef.current = stream;
-        v.srcObject = stream;
-        v.muted = true;
-        v.playsInline = true;
-
+        
+        video.srcObject = stream;
+        video.muted = true;
+        video.playsInline = true;
+        
+        // Wait for video
         await new Promise<void>((resolve, reject) => {
-          const startedAt = performance.now();
-
-          const tick = async () => {
-            if (initTokenRef.current !== myToken) return reject(new Error("Cancelled"));
-
-            if (v.paused) {
-              try {
-                await v.play();
-              } catch {
-                // ignore
-              }
+          const timeout = setTimeout(() => reject(new Error("Timeout")), 8000);
+          
+          const check = () => {
+            if (aborted) {
+              clearTimeout(timeout);
+              reject(new Error("Aborted"));
+              return;
             }
-
-            const ready = v.readyState >= 2 && v.videoWidth > 0 && v.videoHeight > 0;
-            if (ready) return resolve();
-
-            if (performance.now() - startedAt > 10000) {
-              return reject(new Error("Video did not become ready in time"));
+            
+            if (video.readyState >= 2 && video.videoWidth > 0) {
+              clearTimeout(timeout);
+              resolve();
+            } else {
+              requestAnimationFrame(check);
             }
-
-            requestAnimationFrame(tick);
           };
-
-          tick();
+          
+          video.addEventListener("loadeddata", () => {
+            clearTimeout(timeout);
+            resolve();
+          }, { once: true });
+          
+          video.play().catch(() => {});
+          check();
         });
-
-        if (canvasEl?.current) {
-          canvasEl.current.width = v.videoWidth;
-          canvasEl.current.height = v.videoHeight;
+        
+        if (aborted) return;
+        
+        // Set canvas size
+        if (canvas && video.videoWidth > 0) {
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
         }
-
+        
+        // Load MediaPipe
         const vision = await FilesetResolver.forVisionTasks(
           "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm"
         );
-
-        const lm = await HandLandmarker.createFromOptions(vision, {
+        
+        if (aborted) return;
+        
+        landmarker = await HandLandmarker.createFromOptions(vision, {
           baseOptions: {
             modelAssetPath:
               "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task",
@@ -187,229 +307,66 @@ export function useHandControl({
           },
           runningMode: "VIDEO",
           numHands: 1,
-          minHandDetectionConfidence: 0.5,
-          minHandPresenceConfidence: 0.5,
-          minTrackingConfidence: 0.5,
+          minHandDetectionConfidence: 0.5,  // Lowered from 0.7 for speed
+          minHandPresenceConfidence: 0.5,   // Lowered from 0.7 for speed
+          minTrackingConfidence: 0.5,       // Lowered from 0.7 for speed
         });
-
-        if (initTokenRef.current !== myToken) {
-          lm.close();
+        
+        if (aborted) {
+          landmarker.close();
           return;
         }
-
-        landmarkerRef.current = lm;
-
-        let lastVideoTime = -1;
-
-        // hand state
-        let detected = false;
-        let grabbing = false;
-
-        // smoothed center so jitter is reduced
-        let smoothCx = 0.5;
-        let smoothCy = 0.5;
-
-        // previous center for delta rotation
-        let prevCx = 0.5;
-        let prevCy = 0.5;
-
-        // inertia velocity
-        let velX = 0; // affects rx
-        let velY = 0; // affects ry
-
-        const wrap360 = (deg: number) => {
-          const m = deg % 360;
-          return m < 0 ? m + 360 : m;
-        };
-
-        const clamp = (val: number, min: number, max: number) => Math.max(min, Math.min(max, val));
-
-        const draw = (hand: Array<{ x: number; y: number }>) => {
-          const c = canvasEl?.current;
-          if (!c) return;
-          const ctx = c.getContext("2d");
-          if (!ctx) return;
-
-          ctx.clearRect(0, 0, c.width, c.height);
-
-          const pts = [0, 4, 8, 12, 16, 20];
-          ctx.fillStyle = "rgba(74, 222, 128, 0.9)";
-          for (const i of pts) {
-            const p = hand[i];
-            ctx.beginPath();
-            ctx.arc(p.x * c.width, p.y * c.height, 6, 0, Math.PI * 2);
-            ctx.fill();
-          }
-
-          // pinch line
-          const t = hand[4];
-          const i = hand[8];
-          ctx.strokeStyle = grabbing ? "rgba(249, 115, 22, 0.9)" : "rgba(148, 163, 184, 0.7)";
-          ctx.lineWidth = 3;
-          ctx.beginPath();
-          ctx.moveTo(t.x * c.width, t.y * c.height);
-          ctx.lineTo(i.x * c.width, i.y * c.height);
-          ctx.stroke();
-        };
-
-        const loop = () => {
-          if (!enabledRef.current) return;
-
-          rafRef.current = requestAnimationFrame(loop);
-
-          const v2 = videoEl.current;
-          const lm2 = landmarkerRef.current;
-
-          // ROI crash guards
-          if (!v2 || !lm2) return;
-          if (v2.readyState < 2) return;
-          if (v2.videoWidth === 0 || v2.videoHeight === 0) return;
-
-          if (v2.currentTime === lastVideoTime) return;
-          lastVideoTime = v2.currentTime;
-
-          if (processingRef.current) return;
-          processingRef.current = true;
-
-          try {
-            const now = performance.now();
-            const res = lm2.detectForVideo(v2, now);
-            const found = !!(res.landmarks && res.landmarks.length);
-
-            if (found) {
-              const hand = res.landmarks![0];
-
-              if (!detected) {
-                detected = true;
-                onDetectedRef.current?.(true);
-              }
-
-              // center (wrist + mid + pinky base)
-              const wrist = hand[0];
-              const mid = hand[9];
-              const pinky = hand[17];
-              const cx = (wrist.x + mid.x + pinky.x) / 3;
-              const cy = (wrist.y + mid.y + pinky.y) / 3;
-
-              // pinch (thumb tip 4, index tip 8)
-              const thumb = hand[4];
-              const index = hand[8];
-              const pinchDist = Math.hypot(thumb.x - index.x, thumb.y - index.y);
-              const isPinching = pinchDist < pinchThreshold;
-
-              // smooth center
-              smoothCx = smoothCx + (cx - smoothCx) * smoothing;
-              smoothCy = smoothCy + (cy - smoothCy) * smoothing;
-
-              const rot = rotationRef.current;
-
-              if (isPinching && !grabbing) {
-                grabbing = true;
-                onGrabRef.current?.(true);
-
-                prevCx = smoothCx;
-                prevCy = smoothCy;
-
-                velX = 0;
-                velY = 0;
-              }
-
-              if (!isPinching && grabbing) {
-                grabbing = false;
-                onGrabRef.current?.(false);
-                // inertia continues using velX/velY
-              }
-
-              if (grabbing) {
-                const dx = smoothCx - prevCx;
-                const dy = smoothCy - prevCy;
-
-                prevCx = smoothCx;
-                prevCy = smoothCy;
-
-                // convert movement to degrees
-                const addY = dx * degPerNormX;
-                const addX = -dy * degPerNormY;
-
-                // velocity for inertia
-                velY = velY * 0.6 + addY * 0.4;
-                velX = velX * 0.6 + addX * 0.4;
-
-                let nextRy = rot.ry + addY;
-                let nextRx = rot.rx + addX;
-
-                nextRy = wrap360(nextRy);
-
-                if (clampX > 0) {
-                  nextRx = clamp(nextRx, -clampX, clampX);
-                }
-
-                onRotateRef.current(nextRx, nextRy);
-              } else {
-                // apply inertia only when not grabbing
-                const speed = Math.abs(velX) + Math.abs(velY);
-                if (speed > 0.02) {
-                  velX *= inertiaFriction;
-                  velY *= inertiaFriction;
-
-                  let nextRy = rot.ry + velY;
-                  let nextRx = rot.rx + velX;
-
-                  nextRy = wrap360(nextRy);
-
-                  if (clampX > 0) {
-                    nextRx = clamp(nextRx, -clampX, clampX);
-                  }
-
-                  onRotateRef.current(nextRx, nextRy);
-                } else {
-                  velX = 0;
-                  velY = 0;
-                }
-              }
-
-              draw(hand as any);
-            } else {
-              if (detected) {
-                detected = false;
-                onDetectedRef.current?.(false);
-              }
-              if (grabbing) {
-                grabbing = false;
-                onGrabRef.current?.(false);
-              }
-
-              const c = canvasEl?.current;
-              if (c) c.getContext("2d")?.clearRect(0, 0, c.width, c.height);
-            }
-          } catch {
-            // keep alive
-          } finally {
-            processingRef.current = false;
-          }
-        };
-
-        rafRef.current = requestAnimationFrame(loop);
-      } catch (e) {
-        const msg = e instanceof Error ? e.message : "Hand control failed";
-        onErrorRef.current?.(msg);
-        stopAll();
+        
+        // Start loop
+        rafId = requestAnimationFrame(loop);
+        
+      } catch (err) {
+        if (!aborted) {
+          const msg = err instanceof Error ? err.message : "Camera failed";
+          callbacksRef.current.onError?.(msg);
+        }
       }
     };
-
-    run();
-
-    return stopAll;
-  }, [
-    enabled,
-    videoEl,
-    canvasEl,
-    rotationRef,
-    pinchThreshold,
-    degPerNormX,
-    degPerNormY,
-    clampX,
-    inertiaFriction,
-    smoothing,
-  ]);
+    
+    init();
+    
+    // CLEANUP
+    return () => {
+      aborted = true;
+      
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+        rafId = null;
+      }
+      
+      if (landmarker) {
+        try {
+          landmarker.close();
+        } catch (e) {
+          console.warn("[Hand] Landmarker close error:", e);
+        }
+        landmarker = null;
+      }
+      
+      if (stream) {
+        stream.getTracks().forEach(track => {
+          track.stop();
+        });
+        stream = null;
+      }
+      
+      if (video) {
+        video.pause();
+        video.srcObject = null;
+      }
+      
+      if (canvas) {
+        const ctx = canvas.getContext("2d");
+        ctx?.clearRect(0, 0, canvas.width, canvas.height);
+      }
+      
+      callbacksRef.current.onHandDetected?.(false);
+      callbacksRef.current.onGrabChange?.(false);
+    };
+  }, [enabled, videoEl, canvasEl, rotationRef, pinchThreshold, degPerNormX, degPerNormY, clampX]);
 }

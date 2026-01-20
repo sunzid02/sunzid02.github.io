@@ -11,32 +11,50 @@ export function useCubeAutoRotate({
   speedDegPerSec = 6,
   onRotate,
 }: Options) {
-  const raf = useRef<number | null>(null);
-  const last = useRef<number | null>(null);
+  const rafRef = useRef<number | null>(null);
+  const lastTimeRef = useRef<number | null>(null);
+  const onRotateRef = useRef(onRotate);
+  
+  // Keep callback ref up to date
+  useEffect(() => {
+    onRotateRef.current = onRotate;
+  }, [onRotate]);
 
   useEffect(() => {
-    if (!enabled) return;
+    if (!enabled) {
+      // Clean up if disabled
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
+      lastTimeRef.current = null;
+      return;
+    }
 
     const prefersReducedMotion =
       window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false;
 
-    if (prefersReducedMotion) return;
+    if (prefersReducedMotion) {
+      return;
+    }
 
-    const loop = (t: number) => {
-      if (last.current != null) {
-        const dt = (t - last.current) / 1000;
-        onRotate(speedDegPerSec * dt);
+    const loop = (currentTime: number) => {
+      if (lastTimeRef.current !== null) {
+        const deltaTime = (currentTime - lastTimeRef.current) / 1000;
+        onRotateRef.current(speedDegPerSec * deltaTime);
       }
-      last.current = t;
-      raf.current = requestAnimationFrame(loop);
+      lastTimeRef.current = currentTime;
+      rafRef.current = requestAnimationFrame(loop);
     };
 
-    raf.current = requestAnimationFrame(loop);
+    rafRef.current = requestAnimationFrame(loop);
 
     return () => {
-      if (raf.current) cancelAnimationFrame(raf.current);
-      raf.current = null;
-      last.current = null;
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
+      lastTimeRef.current = null;
     };
-  }, [enabled, speedDegPerSec, onRotate]);
+  }, [enabled, speedDegPerSec]); // ← REMOVED onRotate from dependencies
 }
