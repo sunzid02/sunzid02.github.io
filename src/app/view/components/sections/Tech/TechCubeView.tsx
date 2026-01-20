@@ -71,7 +71,6 @@ export default function TechCubeView({ tech }: Props) {
     onGrabChange: handleGrabChange,
     onError: handleHandError,
     pinchThreshold: 0.05,
-    smoothing: 0.35,
     clampX: 80,
   });
 
@@ -178,7 +177,7 @@ export default function TechCubeView({ tech }: Props) {
           className={`tech-tab ${handControl ? "is-active" : ""}`}
           onClick={toggleHandControl}
         >
-          {handControl ? "Hand control on" : "Use hand 👋"}
+          {handControl ? "Hand control on (Testing Phase)" : "Use hand 👋 (Testing Phase) "}
         </button>
       </div>
 

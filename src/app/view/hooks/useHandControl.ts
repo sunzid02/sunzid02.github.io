@@ -28,6 +28,7 @@ export function useHandControl({
   onGrabChange,
   onError,
   pinchThreshold = 0.07,
+  
   degPerNormX = 500,
   degPerNormY = 400,
   clampX = 80,
