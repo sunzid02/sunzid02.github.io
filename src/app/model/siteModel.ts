@@ -200,6 +200,7 @@ export const siteModel: SiteModel = {
       "Alongside my industry experience, I am pursuing a Master’s degree in Data Science, which allows me to combine strong software engineering practices with machine learning and applied AI. This combination helps me build applications that are not only technically robust, but also enhanced by data, automation, and intelligent decision-making. I am comfortable working at the intersection of web development, data, and AI-driven features.",
       "I value clarity, ownership, and long-term thinking in every project. Before starting any task, I follow a principle I call WWW: What, Why, and Where. I focus on understanding what needs to be built, why it matters from a business and user perspective, and where it fits within the overall system. This approach helps me reduce complexity, make better architectural decisions, and leave codebases cleaner and more stable than before.",
       "Colleagues often describe me as calm, dependable, and easy to collaborate with. I enjoy breaking down complex problems, connecting ideas across systems, and building solutions that remain reliable and useful long after they are deployed.",
+      "\"I will keep learning until the last day of my life. The day I die will be my only break. Since that day is unknown, my learning will never stop. That uncertainty is the beauty of life.\" - By me",
     ],
     focusAreas: [
       "Backend API development and clean architecture",
