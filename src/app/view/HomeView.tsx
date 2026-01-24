@@ -17,6 +17,7 @@ import FooterView from "./components/sections/Footer/FooterView";
 import ThemeToggle from "./components/ui/ThemeToggle/ThemeToggle";
 
 import BackToTopView from "./components/ui/BackToTop/BackToTopView";
+import { ChatWidget } from "./components/sections/Chat/ChatWidget";
 
 export default function HomeView() {
   useFadeInOnScroll(); // 👈 activate fade logic
@@ -43,6 +44,7 @@ export default function HomeView() {
         <CreatorView creator={model.creator} />
         <TravelView travel={model.travel} />
         <RecommendationsView recommendations={model.recommendations} />
+        <ChatWidget />
         {/* <ContactView contact={model.contact} /> */}
         <FooterView contact={model.contact} brand={model.brand} />
       </main>
