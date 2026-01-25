@@ -1,1 +1,57 @@
-node_modules
+# Dependencies
+node_modules/
+/.pnp
+.pnp.js
+
+# Testing
+/coverage
+
+# Next.js
+/.next/
+/out/
+
+# Production
+/build
+dist/
+.vercel/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Local dev
+.DS_Store
+*.pem
+.vscode/
+.idea/
+
+# Turbo
+.turbo
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Cache
+.cache/
+*.cache
+
+# Chrome extension
+.chroma/
+.venv/
+
+# Logs
+logs/
+*.log
+
+# OS
+Thumbs.db
