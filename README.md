@@ -15,7 +15,7 @@ My portfolio has been migrated to Vercel for better performance and features inc
 - 🚀 Faster loading times
 - 🎨 Modern UI/UX
 - 📱 Better mobile experience
-- 🤖 Interactive AI that answers questions about my experience
+- 🤖 Interactive AI that answers questions about my experience.
 
 Visit the new site at: **[sarker-smart-portfolio.vercel.app](https://sarker-smart-portfolio.vercel.app/)**
 
